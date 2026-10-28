@@ -2,9 +2,11 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v21
+# Version:  v22
 #
 # Version log
+#   v22 (2026-10-28): Selected prefectures on the shaded maps are outlined in bright blue
+#        with a white edge, so the outline stands out from the red shading.
 #   v21 (2026-10-28): Maps no longer zoom when the page scrolls over them (use + and -);
 #        each region map has a Reset button and the region maps line up; the tab bar
 #        stays at the top while scrolling; the Alert column reads Yes or No.
@@ -121,7 +123,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v21"
+VERSION = "v22"
 
 # Regions used by the Prefecture Map (JIS prefecture codes).
 REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
@@ -190,7 +192,8 @@ LEVEL_COLORS = ["#fee08b", "#fc8d59", "#e34a33", "#b30000", "#67000d"]
 SEA = "#d6eaf8"           # light blue sea, as on the JSPID maps
 BORDER = "#555555"        # thin dark gray prefecture borders
 FADE_OPACITY = 0.35       # prefectures outside the chosen area keep their color, faded
-MAP_SELECT = "#1D3F73"    # dark blue outline for selected prefectures on the warm maps
+MAP_SELECT = "#1D3F73"    # fallback dot color
+SELECT_LINE = "#0096FF"   # bright blue outline for selected prefectures on the warm maps
 MAP_ALERT = "#111111"     # black outline for C2 alerts on the warm maps
 ISLANDS_NOTE = ("Small outlying islands are left off the maps (for example Ogasawara and Amami); "
                 "Okinawa is shown in the inset box.")
@@ -608,7 +611,8 @@ def prefecture_map(m, codes_in_view, view, height, scale_mode, cap, alert_lines=
         add_outline(fig, inset, inside.loc[inside["alert"], "pref_code"], MAP_ALERT, 1.6)
     chosen_here = inside[inside["prefecture"].isin(chosen)]
     if len(chosen_here):
-        add_outline(fig, inset, chosen_here["pref_code"], MAP_SELECT, 3.0)
+        add_outline(fig, inset, chosen_here["pref_code"], "#ffffff", 5.5)
+        add_outline(fig, inset, chosen_here["pref_code"], SELECT_LINE, 2.8)
     if view == "All Japan":
         top = inside.nlargest(8, "per_sentinel")["pref_code"].tolist()
         lab_codes = set(top) | set(chosen_here["pref_code"]) | {OKINAWA}
@@ -1099,7 +1103,7 @@ with tab_pmap:
                    "reports per sentinel site on one scale for all maps. The shading options apply to the Kanto and "
                    "Kansai views. Hover any prefecture for its value.")
     else:
-        st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue"
+        st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in bright blue"
                    + ("; prefectures with a C2 alert this week in black" if p_alert else "")
                    + ". Hover any prefecture for its numbers, including C2 and whether it alerted.")
     if in_view:
@@ -1129,7 +1133,7 @@ with tab_jmap:
                     f"One warm scale from cream to dark red; the darkest step starts at the 98th percentile of the "
                     f"season ({cap:.1f}) so a few extreme values do not flatten the rest. ")
                    + "Labels show the 8 highest prefectures, your selected prefectures and Okinawa. "
-                   + "Selected prefectures are outlined in dark blue"
+                   + "Selected prefectures are outlined in bright blue"
                    + ("; prefectures with a C2 alert this week in black. " if j_alert else ". ")
                    + ISLANDS_NOTE)
     ranked_table(m_week, list(range(1, 48)), f"All prefectures ranked by reports per sentinel, {map_week}")
