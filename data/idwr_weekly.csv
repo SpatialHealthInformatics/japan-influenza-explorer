@@ -21,6 +21,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,1,Hokkaido,Influenza,4.52
 2026,40,2026-09-28,1,Hokkaido,Influenza,9.22
 2026,41,2026-10-05,1,Hokkaido,Influenza,16.21
+2026,42,2026-10-12,1,Hokkaido,Influenza,12.32
 2026,20,2026-05-11,2,Aomori,Influenza,0.17
 2026,21,2026-05-18,2,Aomori,Influenza,0.08
 2026,22,2026-05-25,2,Aomori,Influenza,0.04
@@ -43,6 +44,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,2,Aomori,Influenza,4.88
 2026,40,2026-09-28,2,Aomori,Influenza,6.1
 2026,41,2026-10-05,2,Aomori,Influenza,8.37
+2026,42,2026-10-12,2,Aomori,Influenza,9.58
 2026,20,2026-05-11,3,Iwate,Influenza,0.17
 2026,21,2026-05-18,3,Iwate,Influenza,0.14
 2026,22,2026-05-25,3,Iwate,Influenza,0.07
@@ -65,6 +67,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,3,Iwate,Influenza,5.66
 2026,40,2026-09-28,3,Iwate,Influenza,8.59
 2026,41,2026-10-05,3,Iwate,Influenza,13.34
+2026,42,2026-10-12,3,Iwate,Influenza,12.07
 2026,20,2026-05-11,4,Miyagi,Influenza,0.2
 2026,21,2026-05-18,4,Miyagi,Influenza,0.2
 2026,22,2026-05-25,4,Miyagi,Influenza,0.22
@@ -87,6 +90,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,4,Miyagi,Influenza,5.95
 2026,40,2026-09-28,4,Miyagi,Influenza,7.93
 2026,41,2026-10-05,4,Miyagi,Influenza,10.25
+2026,42,2026-10-12,4,Miyagi,Influenza,7.55
 2026,20,2026-05-11,5,Akita,Influenza,0.04
 2026,21,2026-05-18,5,Akita,Influenza,0.04
 2026,22,2026-05-25,5,Akita,Influenza,0.0
@@ -109,6 +113,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,5,Akita,Influenza,6.16
 2026,40,2026-09-28,5,Akita,Influenza,7.04
 2026,41,2026-10-05,5,Akita,Influenza,8.8
+2026,42,2026-10-12,5,Akita,Influenza,7.04
 2026,20,2026-05-11,6,Yamagata,Influenza,0.54
 2026,21,2026-05-18,6,Yamagata,Influenza,0.18
 2026,22,2026-05-25,6,Yamagata,Influenza,0.05
@@ -131,6 +136,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,6,Yamagata,Influenza,4.08
 2026,40,2026-09-28,6,Yamagata,Influenza,9.1
 2026,41,2026-10-05,6,Yamagata,Influenza,10.13
+2026,42,2026-10-12,6,Yamagata,Influenza,9.44
 2026,20,2026-05-11,7,Fukushima,Influenza,0.1
 2026,21,2026-05-18,7,Fukushima,Influenza,0.02
 2026,22,2026-05-25,7,Fukushima,Influenza,0.04
@@ -153,6 +159,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,7,Fukushima,Influenza,6.79
 2026,40,2026-09-28,7,Fukushima,Influenza,8.31
 2026,41,2026-10-05,7,Fukushima,Influenza,10.9
+2026,42,2026-10-12,7,Fukushima,Influenza,9.04
 2026,20,2026-05-11,8,Ibaraki,Influenza,0.06
 2026,21,2026-05-18,8,Ibaraki,Influenza,0.24
 2026,22,2026-05-25,8,Ibaraki,Influenza,0.15
@@ -175,6 +182,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,8,Ibaraki,Influenza,12.5
 2026,40,2026-09-28,8,Ibaraki,Influenza,13.6
 2026,41,2026-10-05,8,Ibaraki,Influenza,13.24
+2026,42,2026-10-12,8,Ibaraki,Influenza,9.82
 2026,20,2026-05-11,9,Tochigi,Influenza,0.13
 2026,21,2026-05-18,9,Tochigi,Influenza,0.02
 2026,22,2026-05-25,9,Tochigi,Influenza,0.06
@@ -197,6 +205,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,9,Tochigi,Influenza,4.54
 2026,40,2026-09-28,9,Tochigi,Influenza,10.07
 2026,41,2026-10-05,9,Tochigi,Influenza,11.74
+2026,42,2026-10-12,9,Tochigi,Influenza,7.78
 2026,20,2026-05-11,10,Gunma,Influenza,0.11
 2026,21,2026-05-18,10,Gunma,Influenza,0.11
 2026,22,2026-05-25,10,Gunma,Influenza,0.0
@@ -219,6 +228,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,10,Gunma,Influenza,5.47
 2026,40,2026-09-28,10,Gunma,Influenza,11.13
 2026,41,2026-10-05,10,Gunma,Influenza,12.02
+2026,42,2026-10-12,10,Gunma,Influenza,7.78
 2026,20,2026-05-11,11,Saitama,Influenza,0.09
 2026,21,2026-05-18,11,Saitama,Influenza,0.05
 2026,22,2026-05-25,11,Saitama,Influenza,0.02
@@ -241,6 +251,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,11,Saitama,Influenza,14.17
 2026,40,2026-09-28,11,Saitama,Influenza,19.66
 2026,41,2026-10-05,11,Saitama,Influenza,20.99
+2026,42,2026-10-12,11,Saitama,Influenza,15.39
 2026,20,2026-05-11,12,Chiba,Influenza,0.07
 2026,21,2026-05-18,12,Chiba,Influenza,0.06
 2026,22,2026-05-25,12,Chiba,Influenza,0.04
@@ -263,6 +274,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,12,Chiba,Influenza,9.76
 2026,40,2026-09-28,12,Chiba,Influenza,18.72
 2026,41,2026-10-05,12,Chiba,Influenza,19.55
+2026,42,2026-10-12,12,Chiba,Influenza,12.2
 2026,20,2026-05-11,13,Tokyo,Influenza,0.08
 2026,21,2026-05-18,13,Tokyo,Influenza,0.06
 2026,22,2026-05-25,13,Tokyo,Influenza,0.06
@@ -285,6 +297,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,13,Tokyo,Influenza,9.51
 2026,40,2026-09-28,13,Tokyo,Influenza,15.87
 2026,41,2026-10-05,13,Tokyo,Influenza,15.88
+2026,42,2026-10-12,13,Tokyo,Influenza,9.16
 2026,20,2026-05-11,14,Kanagawa,Influenza,0.12
 2026,21,2026-05-18,14,Kanagawa,Influenza,0.07
 2026,22,2026-05-25,14,Kanagawa,Influenza,0.1
@@ -307,6 +320,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,14,Kanagawa,Influenza,8.56
 2026,40,2026-09-28,14,Kanagawa,Influenza,18.48
 2026,41,2026-10-05,14,Kanagawa,Influenza,21.6
+2026,42,2026-10-12,14,Kanagawa,Influenza,10.92
 2026,20,2026-05-11,15,Niigata,Influenza,0.11
 2026,21,2026-05-18,15,Niigata,Influenza,0.02
 2026,22,2026-05-25,15,Niigata,Influenza,0.0
@@ -329,6 +343,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,15,Niigata,Influenza,6.29
 2026,40,2026-09-28,15,Niigata,Influenza,10.05
 2026,41,2026-10-05,15,Niigata,Influenza,11.15
+2026,42,2026-10-12,15,Niigata,Influenza,10.11
 2026,20,2026-05-11,16,Toyama,Influenza,0.11
 2026,21,2026-05-18,16,Toyama,Influenza,0.19
 2026,22,2026-05-25,16,Toyama,Influenza,0.04
@@ -351,6 +366,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,16,Toyama,Influenza,5.85
 2026,40,2026-09-28,16,Toyama,Influenza,9.96
 2026,41,2026-10-05,16,Toyama,Influenza,13.31
+2026,42,2026-10-12,16,Toyama,Influenza,10.42
 2026,20,2026-05-11,17,Ishikawa,Influenza,0.11
 2026,21,2026-05-18,17,Ishikawa,Influenza,0.19
 2026,22,2026-05-25,17,Ishikawa,Influenza,0.04
@@ -373,6 +389,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,17,Ishikawa,Influenza,5.89
 2026,40,2026-09-28,17,Ishikawa,Influenza,11.74
 2026,41,2026-10-05,17,Ishikawa,Influenza,15.43
+2026,42,2026-10-12,17,Ishikawa,Influenza,10.85
 2026,20,2026-05-11,18,Fukui,Influenza,0.05
 2026,21,2026-05-18,18,Fukui,Influenza,0.03
 2026,22,2026-05-25,18,Fukui,Influenza,0.0
@@ -395,6 +412,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,18,Fukui,Influenza,3.21
 2026,40,2026-09-28,18,Fukui,Influenza,6.44
 2026,41,2026-10-05,18,Fukui,Influenza,7.49
+2026,42,2026-10-12,18,Fukui,Influenza,7.85
 2026,20,2026-05-11,19,Yamanashi,Influenza,0.03
 2026,21,2026-05-18,19,Yamanashi,Influenza,0.0
 2026,22,2026-05-25,19,Yamanashi,Influenza,0.0
@@ -417,6 +435,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,19,Yamanashi,Influenza,3.62
 2026,40,2026-09-28,19,Yamanashi,Influenza,9.24
 2026,41,2026-10-05,19,Yamanashi,Influenza,10.44
+2026,42,2026-10-12,19,Yamanashi,Influenza,6.64
 2026,20,2026-05-11,20,Nagano,Influenza,0.32
 2026,21,2026-05-18,20,Nagano,Influenza,0.4
 2026,22,2026-05-25,20,Nagano,Influenza,0.16
@@ -439,6 +458,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,20,Nagano,Influenza,5.74
 2026,40,2026-09-28,20,Nagano,Influenza,7.86
 2026,41,2026-10-05,20,Nagano,Influenza,7.84
+2026,42,2026-10-12,20,Nagano,Influenza,8.28
 2026,20,2026-05-11,21,Gifu,Influenza,0.11
 2026,21,2026-05-18,21,Gifu,Influenza,0.04
 2026,22,2026-05-25,21,Gifu,Influenza,0.04
@@ -461,6 +481,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,21,Gifu,Influenza,10.18
 2026,40,2026-09-28,21,Gifu,Influenza,7.42
 2026,41,2026-10-05,21,Gifu,Influenza,7.53
+2026,42,2026-10-12,21,Gifu,Influenza,5.78
 2026,20,2026-05-11,22,Shizuoka,Influenza,0.02
 2026,21,2026-05-18,22,Shizuoka,Influenza,0.02
 2026,22,2026-05-25,22,Shizuoka,Influenza,0.0
@@ -483,6 +504,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,22,Shizuoka,Influenza,7.44
 2026,40,2026-09-28,22,Shizuoka,Influenza,11.69
 2026,41,2026-10-05,22,Shizuoka,Influenza,10.4
+2026,42,2026-10-12,22,Shizuoka,Influenza,9.09
 2026,20,2026-05-11,23,Aichi,Influenza,0.06
 2026,21,2026-05-18,23,Aichi,Influenza,0.03
 2026,22,2026-05-25,23,Aichi,Influenza,0.04
@@ -505,6 +527,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,23,Aichi,Influenza,12.33
 2026,40,2026-09-28,23,Aichi,Influenza,11.88
 2026,41,2026-10-05,23,Aichi,Influenza,11.47
+2026,42,2026-10-12,23,Aichi,Influenza,7.83
 2026,20,2026-05-11,24,Mie,Influenza,0.17
 2026,21,2026-05-18,24,Mie,Influenza,0.16
 2026,22,2026-05-25,24,Mie,Influenza,0.04
@@ -527,6 +550,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,24,Mie,Influenza,4.51
 2026,40,2026-09-28,24,Mie,Influenza,7.73
 2026,41,2026-10-05,24,Mie,Influenza,8.07
+2026,42,2026-10-12,24,Mie,Influenza,6.21
 2026,20,2026-05-11,25,Shiga,Influenza,0.18
 2026,21,2026-05-18,25,Shiga,Influenza,0.13
 2026,22,2026-05-25,25,Shiga,Influenza,0.18
@@ -549,6 +573,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,25,Shiga,Influenza,3.86
 2026,40,2026-09-28,25,Shiga,Influenza,5.97
 2026,41,2026-10-05,25,Shiga,Influenza,8.36
+2026,42,2026-10-12,25,Shiga,Influenza,8.15
 2026,20,2026-05-11,26,Kyoto,Influenza,0.2
 2026,21,2026-05-18,26,Kyoto,Influenza,0.14
 2026,22,2026-05-25,26,Kyoto,Influenza,0.09
@@ -571,6 +596,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,26,Kyoto,Influenza,5.05
 2026,40,2026-09-28,26,Kyoto,Influenza,8.92
 2026,41,2026-10-05,26,Kyoto,Influenza,10.97
+2026,42,2026-10-12,26,Kyoto,Influenza,8.8
 2026,20,2026-05-11,27,Osaka,Influenza,0.1
 2026,21,2026-05-18,27,Osaka,Influenza,0.06
 2026,22,2026-05-25,27,Osaka,Influenza,0.06
@@ -593,6 +619,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,27,Osaka,Influenza,4.03
 2026,40,2026-09-28,27,Osaka,Influenza,6.18
 2026,41,2026-10-05,27,Osaka,Influenza,8.08
+2026,42,2026-10-12,27,Osaka,Influenza,6.35
 2026,20,2026-05-11,28,Hyogo,Influenza,0.09
 2026,21,2026-05-18,28,Hyogo,Influenza,0.09
 2026,22,2026-05-25,28,Hyogo,Influenza,0.04
@@ -615,6 +642,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,28,Hyogo,Influenza,3.55
 2026,40,2026-09-28,28,Hyogo,Influenza,7.54
 2026,41,2026-10-05,28,Hyogo,Influenza,10.15
+2026,42,2026-10-12,28,Hyogo,Influenza,10.05
 2026,20,2026-05-11,29,Nara,Influenza,0.07
 2026,21,2026-05-18,29,Nara,Influenza,0.14
 2026,22,2026-05-25,29,Nara,Influenza,0.02
@@ -637,6 +665,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,29,Nara,Influenza,2.71
 2026,40,2026-09-28,29,Nara,Influenza,6.1
 2026,41,2026-10-05,29,Nara,Influenza,6.21
+2026,42,2026-10-12,29,Nara,Influenza,5.62
 2026,20,2026-05-11,30,Wakayama,Influenza,0.02
 2026,21,2026-05-18,30,Wakayama,Influenza,0.09
 2026,22,2026-05-25,30,Wakayama,Influenza,0.04
@@ -659,6 +688,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,30,Wakayama,Influenza,2.8
 2026,40,2026-09-28,30,Wakayama,Influenza,4.62
 2026,41,2026-10-05,30,Wakayama,Influenza,4.8
+2026,42,2026-10-12,30,Wakayama,Influenza,4.29
 2026,20,2026-05-11,31,Tottori,Influenza,0.1
 2026,21,2026-05-18,31,Tottori,Influenza,0.07
 2026,22,2026-05-25,31,Tottori,Influenza,0.0
@@ -681,6 +711,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,31,Tottori,Influenza,3.03
 2026,40,2026-09-28,31,Tottori,Influenza,5.17
 2026,41,2026-10-05,31,Tottori,Influenza,5.0
+2026,42,2026-10-12,31,Tottori,Influenza,3.76
 2026,20,2026-05-11,32,Shimane,Influenza,0.1
 2026,21,2026-05-18,32,Shimane,Influenza,0.1
 2026,22,2026-05-25,32,Shimane,Influenza,0.05
@@ -703,6 +734,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,32,Shimane,Influenza,3.9
 2026,40,2026-09-28,32,Shimane,Influenza,5.5
 2026,41,2026-10-05,32,Shimane,Influenza,6.55
+2026,42,2026-10-12,32,Shimane,Influenza,7.3
 2026,20,2026-05-11,33,Okayama,Influenza,0.12
 2026,21,2026-05-18,33,Okayama,Influenza,0.06
 2026,22,2026-05-25,33,Okayama,Influenza,0.02
@@ -725,6 +757,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,33,Okayama,Influenza,3.12
 2026,40,2026-09-28,33,Okayama,Influenza,6.12
 2026,41,2026-10-05,33,Okayama,Influenza,5.5
+2026,42,2026-10-12,33,Okayama,Influenza,4.28
 2026,20,2026-05-11,34,Hiroshima,Influenza,0.09
 2026,21,2026-05-18,34,Hiroshima,Influenza,0.02
 2026,22,2026-05-25,34,Hiroshima,Influenza,0.02
@@ -747,6 +780,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,34,Hiroshima,Influenza,3.98
 2026,40,2026-09-28,34,Hiroshima,Influenza,7.27
 2026,41,2026-10-05,34,Hiroshima,Influenza,7.4
+2026,42,2026-10-12,34,Hiroshima,Influenza,4.48
 2026,20,2026-05-11,35,Yamaguchi,Influenza,0.32
 2026,21,2026-05-18,35,Yamaguchi,Influenza,0.02
 2026,22,2026-05-25,35,Yamaguchi,Influenza,0.02
@@ -769,6 +803,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,35,Yamaguchi,Influenza,3.66
 2026,40,2026-09-28,35,Yamaguchi,Influenza,8.23
 2026,41,2026-10-05,35,Yamaguchi,Influenza,12.36
+2026,42,2026-10-12,35,Yamaguchi,Influenza,7.72
 2026,20,2026-05-11,36,Tokushima,Influenza,0.06
 2026,21,2026-05-18,36,Tokushima,Influenza,0.03
 2026,22,2026-05-25,36,Tokushima,Influenza,0.03
@@ -791,6 +826,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,36,Tokushima,Influenza,4.24
 2026,40,2026-09-28,36,Tokushima,Influenza,10.27
 2026,41,2026-10-05,36,Tokushima,Influenza,11.24
+2026,42,2026-10-12,36,Tokushima,Influenza,5.58
 2026,20,2026-05-11,37,Kagawa,Influenza,0.04
 2026,21,2026-05-18,37,Kagawa,Influenza,0.04
 2026,22,2026-05-25,37,Kagawa,Influenza,0.0
@@ -813,6 +849,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,37,Kagawa,Influenza,3.09
 2026,40,2026-09-28,37,Kagawa,Influenza,3.22
 2026,41,2026-10-05,37,Kagawa,Influenza,3.78
+2026,42,2026-10-12,37,Kagawa,Influenza,4.04
 2026,20,2026-05-11,38,Ehime,Influenza,0.16
 2026,21,2026-05-18,38,Ehime,Influenza,0.11
 2026,22,2026-05-25,38,Ehime,Influenza,0.0
@@ -835,6 +872,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,38,Ehime,Influenza,3.35
 2026,40,2026-09-28,38,Ehime,Influenza,6.79
 2026,41,2026-10-05,38,Ehime,Influenza,10.35
+2026,42,2026-10-12,38,Ehime,Influenza,8.31
 2026,20,2026-05-11,39,Kochi,Influenza,0.0
 2026,21,2026-05-18,39,Kochi,Influenza,0.03
 2026,22,2026-05-25,39,Kochi,Influenza,0.0
@@ -857,6 +895,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,39,Kochi,Influenza,2.78
 2026,40,2026-09-28,39,Kochi,Influenza,6.54
 2026,41,2026-10-05,39,Kochi,Influenza,7.28
+2026,42,2026-10-12,39,Kochi,Influenza,5.0
 2026,20,2026-05-11,40,Fukuoka,Influenza,0.07
 2026,21,2026-05-18,40,Fukuoka,Influenza,0.06
 2026,22,2026-05-25,40,Fukuoka,Influenza,0.06
@@ -879,6 +918,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,40,Fukuoka,Influenza,6.44
 2026,40,2026-09-28,40,Fukuoka,Influenza,8.97
 2026,41,2026-10-05,40,Fukuoka,Influenza,10.02
+2026,42,2026-10-12,40,Fukuoka,Influenza,8.1
 2026,20,2026-05-11,41,Saga,Influenza,0.42
 2026,21,2026-05-18,41,Saga,Influenza,0.0
 2026,22,2026-05-25,41,Saga,Influenza,0.04
@@ -901,6 +941,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,41,Saga,Influenza,2.67
 2026,40,2026-09-28,41,Saga,Influenza,5.42
 2026,41,2026-10-05,41,Saga,Influenza,7.63
+2026,42,2026-10-12,41,Saga,Influenza,5.67
 2026,20,2026-05-11,42,Nagasaki,Influenza,0.04
 2026,21,2026-05-18,42,Nagasaki,Influenza,0.0
 2026,22,2026-05-25,42,Nagasaki,Influenza,0.0
@@ -923,6 +964,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,42,Nagasaki,Influenza,7.34
 2026,40,2026-09-28,42,Nagasaki,Influenza,12.84
 2026,41,2026-10-05,42,Nagasaki,Influenza,13.26
+2026,42,2026-10-12,42,Nagasaki,Influenza,12.28
 2026,20,2026-05-11,43,Kumamoto,Influenza,0.1
 2026,21,2026-05-18,43,Kumamoto,Influenza,0.03
 2026,22,2026-05-25,43,Kumamoto,Influenza,0.01
@@ -945,6 +987,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,43,Kumamoto,Influenza,3.86
 2026,40,2026-09-28,43,Kumamoto,Influenza,10.2
 2026,41,2026-10-05,43,Kumamoto,Influenza,14.15
+2026,42,2026-10-12,43,Kumamoto,Influenza,10.27
 2026,20,2026-05-11,44,Oita,Influenza,0.05
 2026,21,2026-05-18,44,Oita,Influenza,0.0
 2026,22,2026-05-25,44,Oita,Influenza,0.0
@@ -967,6 +1010,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,44,Oita,Influenza,5.03
 2026,40,2026-09-28,44,Oita,Influenza,7.6
 2026,41,2026-10-05,44,Oita,Influenza,10.57
+2026,42,2026-10-12,44,Oita,Influenza,5.97
 2026,20,2026-05-11,45,Miyazaki,Influenza,0.14
 2026,21,2026-05-18,45,Miyazaki,Influenza,0.0
 2026,22,2026-05-25,45,Miyazaki,Influenza,0.04
@@ -989,6 +1033,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,45,Miyazaki,Influenza,3.04
 2026,40,2026-09-28,45,Miyazaki,Influenza,7.07
 2026,41,2026-10-05,45,Miyazaki,Influenza,6.86
+2026,42,2026-10-12,45,Miyazaki,Influenza,5.36
 2026,20,2026-05-11,46,Kagoshima,Influenza,0.19
 2026,21,2026-05-18,46,Kagoshima,Influenza,0.02
 2026,22,2026-05-25,46,Kagoshima,Influenza,0.11
@@ -1011,6 +1056,7 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,46,Kagoshima,Influenza,6.82
 2026,40,2026-09-28,46,Kagoshima,Influenza,10.58
 2026,41,2026-10-05,46,Kagoshima,Influenza,11.96
+2026,42,2026-10-12,46,Kagoshima,Influenza,9.47
 2026,20,2026-05-11,47,Okinawa,Influenza,2.52
 2026,21,2026-05-18,47,Okinawa,Influenza,1.57
 2026,22,2026-05-25,47,Okinawa,Influenza,1.11
@@ -1033,3 +1079,4 @@ year,week,week_start,pref_code,prefecture,disease,per_sentinel
 2026,39,2026-09-21,47,Okinawa,Influenza,42.5
 2026,40,2026-09-28,47,Okinawa,Influenza,37.07
 2026,41,2026-10-05,47,Okinawa,Influenza,31.34
+2026,42,2026-10-12,47,Okinawa,Influenza,19.68
