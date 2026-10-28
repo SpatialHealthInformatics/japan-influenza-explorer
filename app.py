@@ -2,9 +2,12 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v16
+# Version:  v17
 #
 # Version log
+#   v17 (2026-10-28): Adds IDWR 2026 week 42. The Prefecture Map opens in Bubbles style (like
+#        the COVID-19 app Map tab); the shaded maps drop the dots and outline selected
+#        prefectures more thickly, with their names, like the COVID-19 World Map.
 #   v16 (2026-10-28): Summary Table lists only the prefectures selected in the sidebar
 #        (empty when none are selected), with a switch to show all 47; selected
 #        prefectures get a dot in their chart color on every map; the Prefecture Map
@@ -108,7 +111,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v16"
+VERSION = "v17"
 
 
 def lead_range_text(leads):
@@ -588,16 +591,13 @@ def prefecture_map(m, codes_in_view, view, height, scale_mode, cap, alert_lines=
         add_outline(fig, inset, inside.loc[inside["alert"], "pref_code"], MAP_ALERT, 1.6)
     chosen_here = inside[inside["prefecture"].isin(chosen)]
     if len(chosen_here):
-        add_outline(fig, inset, chosen_here["pref_code"], MAP_SELECT, 1.8)
-    sel_codes = set(chosen_here["pref_code"])
+        add_outline(fig, inset, chosen_here["pref_code"], MAP_SELECT, 3.0)
     if view == "All Japan":
         top = inside.nlargest(8, "per_sentinel")["pref_code"].tolist()
-        lab_codes = (set(top) | {OKINAWA}) - sel_codes
+        lab_codes = set(top) | set(chosen_here["pref_code"]) | {OKINAWA}
         add_labels(fig, inset, inside[inside["pref_code"].isin(lab_codes)], 10)
-        add_dots(fig, inset, chosen_here, 10)
     else:
-        add_labels(fig, inset, inside[~inside["pref_code"].isin(sel_codes)], 12)
-        add_dots(fig, inset, chosen_here, 12)
+        add_labels(fig, inset, inside, 12)
     return fig
 
 
@@ -1025,7 +1025,7 @@ with tab_pmap:
     c_area, c_scale = st.columns([3, 2])
     area = c_area.radio("Area", ["Kanto and Kansai", "Kanto (Tokyo area)", "Kansai (Osaka area)",
                                  "Selected prefectures"], horizontal=True, key="pmap_area")
-    pstyle = c_scale.radio("Map style", ["Shaded", "Bubbles"], horizontal=True, key="pmap_style",
+    pstyle = c_scale.radio("Map style", ["Bubbles", "Shaded"], horizontal=True, key="pmap_style",
                            help="Shaded: every prefecture colored by its level. Bubbles: a gray map with a bubble "
                                 "for each selected prefecture, sized by reports per sentinel site.")
     bubbles = pstyle == "Bubbles"
@@ -1066,8 +1066,7 @@ with tab_pmap:
     else:
         if pscale == "IDWR levels":
             level_legend()
-        st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue and "
-                   "marked with a dot in their chart color"
+        st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue"
                    + ("; prefectures with a C2 alert this week in black" if p_alert else "")
                    + ". Hover any prefecture for its numbers, including C2 and whether it alerted.")
     if in_view:
@@ -1086,7 +1085,7 @@ with tab_jmap:
                 f"One warm scale from cream to dark red; the darkest step starts at the 98th percentile of the "
                 f"season ({cap:.1f}) so a few extreme values do not flatten the rest. ")
                + "Labels show the 8 highest prefectures, your selected prefectures and Okinawa. "
-               + "Selected prefectures are outlined in dark blue and marked with a dot in their chart color"
+               + "Selected prefectures are outlined in dark blue"
                + ("; prefectures with a C2 alert this week in black. " if j_alert else ". ")
                + ISLANDS_NOTE)
     ranked_table(m_week, list(range(1, 48)), f"All prefectures ranked by reports per sentinel, {map_week}")
