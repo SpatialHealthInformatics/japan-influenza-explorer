@@ -2,9 +2,13 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v13
+# Version:  v15
 #
 # Version log
+#   v15 (2026-10-28): AppleGothic is out of the font list, so browsers without
+#        Century Gothic use Didact Gothic (a look-alike) and not a Korean system font.
+#   v14 (2026-10-28): Spatial Statistics cards are the same height with two-line
+#        notes, and the Moran card no longer shows a minus sign ("near 0 means no pattern").
 #   v13 (2026-10-28): Summary Table lead range is written in words (for example
 #        "1 week after onset to 7 weeks before"), with no minus sign, and the
 #        Lead column explains that a negative value means the alert came after onset.
@@ -100,7 +104,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v13"
+VERSION = "v15"
 
 
 def lead_range_text(leads):
@@ -125,7 +129,7 @@ IDWR_URL = "https://id-info.jihs.go.jp/surveillance/idwr/"
 SAMPLE_PATH = ROOT / "sample" / "idwr_weekly_sample.csv"
 ALLOW_SAMPLE = os.environ.get("JIE_SAMPLE") == "1"
 
-FONT_STACK = "Century Gothic, CenturyGothic, AppleGothic, Didact Gothic, sans-serif"
+FONT_STACK = "Century Gothic, CenturyGothic, Didact Gothic, sans-serif"
 pio.templates["appfont"] = go.layout.Template(layout=dict(font=dict(family=FONT_STACK)))
 pio.templates.default = "plotly_white+appfont"
 
@@ -620,7 +624,7 @@ st.markdown(
        for everyone else. The same pair the portfolio site uses. */
     @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
     html, body, [class*="st-"], .stApp, button, input, select, textarea {
-        font-family: "Century Gothic", CenturyGothic, AppleGothic, "Didact Gothic", sans-serif;
+        font-family: "Century Gothic", CenturyGothic, "Didact Gothic", sans-serif;
     }
     /* Streamlit draws its icons with a ligature font. The rule above would turn
        them into their literal names, such as keyboard_double_arrow_left, so the
@@ -639,7 +643,7 @@ st.markdown(
     .tile .sub {font-size: 0.8rem; color: #52514e; margin-top: 6px; line-height: 1.35;}
     /* Cards in the portfolio site's style: a pastel fill, a border a shade
        deeper, and a 6px edge in the card's own color. */
-    .stile {border-radius: 10px; padding: 16px 18px 14px 18px; height: 100%; min-height: 152px;
+    .stile {border-radius: 10px; padding: 16px 18px 14px 18px; height: 100%; min-height: 170px;
             box-sizing: border-box; border: 1px solid transparent; border-left-width: 6px;}
     .stile .name {font-size: 0.95rem; font-weight: 600;}
     .stile .big {font-size: 1.9rem; font-weight: 600; margin-top: 4px; line-height: 1.1; color: #14212B;}
@@ -773,13 +777,13 @@ with tab_spatial:
             hh = int((sp["cluster"] == "High-High").sum())
             cards = [
                 ("Global Moran's I", f"{I:.3f}", "#FBE7E6", "#F0CBC8", "#A33E50",
-                 f"{verdict}<br>Expected {EI:.3f} under no pattern"),
+                 f"{verdict}<br>Near 0 would mean no pattern"),
                 ("Permutation p-value", p_txt, "#E3F2F3", "#C3E0E2", "#16707E",
                  f"{PERMUTATIONS} random re-assignments<br>of the values to prefectures"),
                 ("High-High prefectures", f"{hh}", "#FFF7D1", "#F7E08A", "#8C6D00",
                  "High reports whose neighbors<br>also have high reports"),
                 ("Prefectures in analysis", f"{len(sp)}", "#F1EBF8", "#DACDEC", "#6A4C9C",
-                 f"Week {map_week}<br>Neighbors: shared border, plus<br>3 sea links (Okinawa, Hokkaido, Kyushu)"),
+                 f"Week {map_week}<br>Border neighbors plus 3 sea links"),
             ]
             for col, (name, big, fill, edge, accent, sub) in zip(st.columns(4), cards):
                 col.markdown(
