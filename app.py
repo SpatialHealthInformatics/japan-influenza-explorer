@@ -2,9 +2,16 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v17
+# Version:  v20
 #
 # Version log
+#   v20 (2026-10-28): The Prefecture Map opens on "Region of each selected prefecture": a gray
+#        map of the region (Hokkaido, Tohoku, Kanto, Chubu, Kinki, Chugoku, Shikoku, Kyushu,
+#        Okinawa) with a bubble on each selected prefecture, one map per region.
+#   v19 (2026-10-28): The Prefecture Map opens with one zoomed map for each selected
+#        prefecture (any region, Hokkaido and Okinawa included); Kanto and Kansai stay as
+#        choices. The Bubbles style moved to the Japan Map, like the COVID-19 app Map tab.
+#   v18 (2026-10-28): The Prefecture Map had an All Japan area (replaced in v19).
 #   v17 (2026-10-28): Adds IDWR 2026 week 42. The Prefecture Map opens in Bubbles style (like
 #        the COVID-19 app Map tab); the shaded maps drop the dots and outline selected
 #        prefectures more thickly, with their names, like the COVID-19 World Map.
@@ -111,7 +118,14 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v17"
+VERSION = "v20"
+
+# Regions used by the Prefecture Map (JIS prefecture codes).
+REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
+           "Chubu": list(range(15, 24)), "Kinki (Kansai)": list(range(24, 31)),
+           "Chugoku": list(range(31, 36)), "Shikoku": list(range(36, 40)),
+           "Kyushu": list(range(40, 47)), "Okinawa": [47]}
+REGION_OF = {c: r for r, cs in REGIONS.items() for c in cs}
 
 
 def lead_range_text(leads):
@@ -1023,71 +1037,92 @@ with tab_chart:
 # ---- Map tab (Kanto, Kansai, selected prefectures) ------------------------------------------------------------
 with tab_pmap:
     c_area, c_scale = st.columns([3, 2])
-    area = c_area.radio("Area", ["Kanto and Kansai", "Kanto (Tokyo area)", "Kansai (Osaka area)",
-                                 "Selected prefectures"], horizontal=True, key="pmap_area")
-    pstyle = c_scale.radio("Map style", ["Bubbles", "Shaded"], horizontal=True, key="pmap_style",
-                           help="Shaded: every prefecture colored by its level. Bubbles: a gray map with a bubble "
-                                "for each selected prefecture, sized by reports per sentinel site.")
-    bubbles = pstyle == "Bubbles"
-    if bubbles:
-        pscale, p_alert = "IDWR levels", False
-    else:
-        pscale = c_scale.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True,
-                               key="pmap_scale",
-                               help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
-        p_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False,
-                            key="pmap_alert_lines")
-
-    def pmap(codes, view, height):
-        return bubble_map(m_week, codes, view, height) if bubbles else \
-            prefecture_map(m_week, codes, view, height, pscale, cap, p_alert)
-    if area == "Kanto and Kansai":
+    area = c_area.radio("Area", ["Region of each selected prefecture", "Kanto and Kansai", "Kanto (Tokyo area)",
+                                 "Kansai (Osaka area)"], horizontal=True, key="pmap_area")
+    pscale = c_scale.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True, key="pmap_scale",
+                           help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
+    p_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False, key="pmap_alert_lines")
+    if area == "Region of each selected prefecture":
+        sel = m_week[m_week["prefecture"].isin(chosen)].set_index("prefecture")
+        in_view = sel["pref_code"].tolist()
+        if sel.empty:
+            st.info("Add prefectures in the sidebar; each one appears as a bubble on a map of its region.")
+        else:
+            st.markdown(f"**Region of each selected prefecture** · bubble area shows reports per sentinel site · "
+                        f"{map_week}")
+            names = [p for p in chosen if p in sel.index]
+            regions = []
+            for p in names:
+                r = REGION_OF[int(sel.loc[p, "pref_code"])]
+                if r not in regions:
+                    regions.append(r)
+            for i in range(0, len(regions), 2):
+                for col, r in zip(st.columns(2), regions[i:i + 2]):
+                    with col:
+                        lines = []
+                        for p in names:
+                            if REGION_OF[int(sel.loc[p, "pref_code"])] != r:
+                                continue
+                            row = sel.loc[p]
+                            c2t = "n/a" if pd.isna(row["c2"]) else f"{row['c2']:.1f}"
+                            dot = (f"<span style='display:inline-block;width:11px;height:11px;border-radius:50%;"
+                                   f"background:{colors.get(p, MAP_SELECT)};margin-right:6px'></span>")
+                            lines.append(f"{dot}**{p}** · {row['per_sentinel']:.2f} per sentinel · C2 {c2t}"
+                                         + (" · **alert**" if bool(row["alert"]) else ""))
+                        st.markdown(f"**{r}**<br>" + "<br>".join(lines), unsafe_allow_html=True)
+                        show(bubble_map(m_week, REGIONS[r], f"region-{r}", 380), width="stretch",
+                             config=MAPCFG, key=f"region_{r}")
+    elif area == "Kanto and Kansai":
         mc1, mc2 = st.columns(2)
         for col, v, nm in ((mc1, "Kanto (Tokyo area)", "kanto"), (mc2, "Kansai (Osaka area)", "kansai")):
             with col:
                 st.markdown(f"**{v}** · {map_week}")
-                map_with_reset(pmap(VIEWS[v]["codes"], v, 460), nm)
+                map_with_reset(prefecture_map(m_week, VIEWS[v]["codes"], v, 460, pscale, cap, p_alert), nm)
         in_view = VIEWS["Kanto (Tokyo area)"]["codes"] + VIEWS["Kansai (Osaka area)"]["codes"]
-    elif area == "Selected prefectures":
-        in_view = m_week[m_week["prefecture"].isin(chosen)]["pref_code"].tolist()
-        if not in_view:
-            st.info("Add at least one prefecture in the sidebar to see this map.")
-        else:
-            st.markdown(f"**Selected prefectures** · reports per sentinel site · {map_week}")
-            map_with_reset(pmap(in_view, "selection", 540), "selection")
     else:
         in_view = VIEWS[area]["codes"]
         st.markdown(f"**{area}** · reports per sentinel site · {map_week}")
-        map_with_reset(pmap(in_view, area, 540), "area")
-    if bubbles:
-        st.caption("Bubble area shows reports per sentinel site, on one scale for all prefectures, in each "
-                   "selected prefecture's chart color. Add prefectures in the sidebar to add bubbles. "
-                   "Hover any prefecture for its value.")
+        map_with_reset(prefecture_map(m_week, in_view, area, 540, pscale, cap, p_alert), "area")
+    if pscale == "IDWR levels" and area != "Region of each selected prefecture":
+        level_legend()
+    if area == "Region of each selected prefecture":
+        st.caption("Each map shows one region; a bubble marks each selected prefecture in its chart color, sized by "
+                   "reports per sentinel site on one scale for all maps. The shading options apply to the Kanto and "
+                   "Kansai views. Hover any prefecture for its value.")
     else:
-        if pscale == "IDWR levels":
-            level_legend()
         st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue"
                    + ("; prefectures with a C2 alert this week in black" if p_alert else "")
                    + ". Hover any prefecture for its numbers, including C2 and whether it alerted.")
     if in_view:
-        ranked_table(m_week, in_view, f"Prefectures in this area ranked by reports per sentinel, {map_week}")
+        ranked_table(m_week, in_view, f"Prefectures shown here ranked by reports per sentinel, {map_week}")
 
 # ---- Japan map tab -----------------------------------------------------------------
 with tab_jmap:
-    jscale = st.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True, key="jmap_scale",
-                      help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
-    j_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False, key="jmap_alert_lines")
-    st.markdown(f"**{disease}: reports per sentinel site in every prefecture** · {map_week}")
-    map_with_reset(prefecture_map(m_week, list(range(1, 48)), "All Japan", 900, jscale, cap, j_alert), "japan")
-    if jscale == "IDWR levels":
-        level_legend()
-    st.caption(("Five bands: under 1.0, then steps up to the warning level of 30. " if jscale == "IDWR levels" else
-                f"One warm scale from cream to dark red; the darkest step starts at the 98th percentile of the "
-                f"season ({cap:.1f}) so a few extreme values do not flatten the rest. ")
-               + "Labels show the 8 highest prefectures, your selected prefectures and Okinawa. "
-               + "Selected prefectures are outlined in dark blue"
-               + ("; prefectures with a C2 alert this week in black. " if j_alert else ". ")
-               + ISLANDS_NOTE)
+    j1, j2 = st.columns([2, 3])
+    jstyle = j1.radio("Map style", ["Shaded", "Bubbles"], horizontal=True, key="jmap_style",
+                      help="Shaded: every prefecture colored by its level. Bubbles: a gray map with a bubble for each "
+                           "selected prefecture, sized by reports per sentinel site.")
+    if jstyle == "Bubbles":
+        st.markdown(f"**{disease}: selected prefectures** · reports per sentinel site · {map_week}")
+        map_with_reset(bubble_map(m_week, list(range(1, 48)), "All Japan", 900), "japan_bubbles")
+        st.caption("Bubble area shows reports per sentinel site, on one scale for all prefectures, in each selected "
+                   "prefecture's chart color. Add prefectures in the sidebar to add bubbles. " + ISLANDS_NOTE)
+    else:
+        jscale = j2.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True, key="jmap_scale",
+                          help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
+        j_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False,
+                            key="jmap_alert_lines")
+        st.markdown(f"**{disease}: reports per sentinel site in every prefecture** · {map_week}")
+        map_with_reset(prefecture_map(m_week, list(range(1, 48)), "All Japan", 900, jscale, cap, j_alert), "japan")
+        if jscale == "IDWR levels":
+            level_legend()
+        st.caption(("Five bands: under 1.0, then steps up to the warning level of 30. " if jscale == "IDWR levels" else
+                    f"One warm scale from cream to dark red; the darkest step starts at the 98th percentile of the "
+                    f"season ({cap:.1f}) so a few extreme values do not flatten the rest. ")
+                   + "Labels show the 8 highest prefectures, your selected prefectures and Okinawa. "
+                   + "Selected prefectures are outlined in dark blue"
+                   + ("; prefectures with a C2 alert this week in black. " if j_alert else ". ")
+                   + ISLANDS_NOTE)
     ranked_table(m_week, list(range(1, 48)), f"All prefectures ranked by reports per sentinel, {map_week}")
 
 # ---- Alerts tab --------------------------------------------------------------------
