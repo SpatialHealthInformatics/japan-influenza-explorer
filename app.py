@@ -2,9 +2,13 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v15
+# Version:  v16
 #
 # Version log
+#   v16 (2026-10-28): Summary Table lists only the prefectures selected in the sidebar
+#        (empty when none are selected), with a switch to show all 47; selected
+#        prefectures get a dot in their chart color on every map; the Prefecture Map
+#        has a Bubbles style like the COVID-19 app; the Japan Map is taller; the four cards stay an all-47 summary and say so.
 #   v15 (2026-10-28): AppleGothic is out of the font list, so browsers without
 #        Century Gothic use Didact Gothic (a look-alike) and not a Korean system font.
 #   v14 (2026-10-28): Spatial Statistics cards are the same height with two-line
@@ -104,7 +108,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v15"
+VERSION = "v16"
 
 
 def lead_range_text(leads):
@@ -533,6 +537,25 @@ def add_labels(fig, inset, df, size):
             textfont=dict(size=size, color="#111111", family=FONT_STACK, weight="bold", shadow="0 0 3px #ffffff")))
 
 
+def add_dots(fig, inset, df, size):
+    """A dot in each selected prefecture's chart color, so the selection is easy to find."""
+    if df.empty:
+        return
+    lab = load_labels()
+    for part, g in ([(df[df["pref_code"] != OKINAWA], "geo"), (df[df["pref_code"] == OKINAWA], "geo2")]
+                    if inset else [(df, "geo")]):
+        if part.empty:
+            continue
+        pts = lab.loc[part["pref_code"]]
+        fig.add_trace(go.Scattergeo(
+            lon=pts["lon"], lat=pts["lat"], mode="markers+text", geo=g, hoverinfo="skip",
+            text=[f"{n} {v:.1f}" for n, v in zip(part["prefecture"], part["per_sentinel"])],
+            textposition="top center",
+            textfont=dict(size=size, color="#111111", family=FONT_STACK, weight="bold", shadow="0 0 3px #ffffff"),
+            marker=dict(size=19, color=[colors.get(p, MAP_SELECT) for p in part["prefecture"]],
+                        line=dict(color="#14212B", width=2.5))))
+
+
 def prefecture_map(m, codes_in_view, view, height, scale_mode, cap, alert_lines=False):
     """Map of reports per sentinel in the JSPID slide style: warm colors, light blue
     sea, thin gray borders, names and values on the map. Prefectures outside the
@@ -566,12 +589,52 @@ def prefecture_map(m, codes_in_view, view, height, scale_mode, cap, alert_lines=
     chosen_here = inside[inside["prefecture"].isin(chosen)]
     if len(chosen_here):
         add_outline(fig, inset, chosen_here["pref_code"], MAP_SELECT, 1.8)
+    sel_codes = set(chosen_here["pref_code"])
     if view == "All Japan":
         top = inside.nlargest(8, "per_sentinel")["pref_code"].tolist()
-        lab_codes = set(top) | set(chosen_here["pref_code"]) | {OKINAWA}
+        lab_codes = (set(top) | {OKINAWA}) - sel_codes
         add_labels(fig, inset, inside[inside["pref_code"].isin(lab_codes)], 10)
+        add_dots(fig, inset, chosen_here, 10)
     else:
-        add_labels(fig, inset, inside, 12)
+        add_labels(fig, inset, inside[~inside["pref_code"].isin(sel_codes)], 12)
+        add_dots(fig, inset, chosen_here, 12)
+    return fig
+
+
+def bubble_map(m, codes_in_view, view, height):
+    """Light gray map with a bubble for each selected prefecture, sized by reports per
+    sentinel site, in the prefecture's chart color (the look of the COVID-19 app's Map tab)."""
+    fig, inset = base_map(view, codes_in_view, height)
+    m = m.reset_index(drop=True)
+    inn = m["pref_code"].isin(codes_in_view).to_numpy()
+    hover = "<b>%{text}</b><br>Reports per sentinel: %{customdata:.2f}<extra></extra>"
+    for mask, fill, line in ((~inn, "#F6F6F4", "#D5D9DD"), (inn, "#ECECE8", "#AEB6BE")):
+        if not mask.any():
+            continue
+        part = m[mask]
+        add_choro(fig, inset, part, z=[1] * len(part), colorscale=[[0, fill], [1, fill]], showscale=False,
+                  text=part["prefecture"].to_numpy(), customdata=part["per_sentinel"].to_numpy(),
+                  hovertemplate=hover, marker_line_color=line, marker_line_width=0.6)
+    sel = m[inn & m["prefecture"].isin(chosen).to_numpy()]
+    if sel.empty:
+        return fig
+    lab = load_labels()
+    top = max(float(m["per_sentinel"].max()), 1.0)
+    sizeref = 2.0 * top / (58 ** 2)
+    for part, g in ([(sel[sel["pref_code"] != OKINAWA], "geo"), (sel[sel["pref_code"] == OKINAWA], "geo2")]
+                    if inset else [(sel, "geo")]):
+        if part.empty:
+            continue
+        pts = lab.loc[part["pref_code"]]
+        fig.add_trace(go.Scattergeo(
+            lon=pts["lon"], lat=pts["lat"], geo=g, mode="markers+text",
+            text=[f"{n} {v:.1f}" for n, v in zip(part["prefecture"], part["per_sentinel"])],
+            textposition="top center", textfont=dict(size=12, color="#1f2933", family=FONT_STACK),
+            customdata=part["per_sentinel"].to_numpy(),
+            hovertemplate="<b>%{text}</b><extra></extra>",
+            marker=dict(size=part["per_sentinel"].clip(lower=0.3).to_numpy(), sizemode="area", sizeref=sizeref,
+                        sizemin=8, color=[colors.get(p, MAP_SELECT) for p in part["prefecture"]],
+                        opacity=0.85, line=dict(color="#ffffff", width=1.5))))
     return fig
 
 
@@ -962,15 +1025,28 @@ with tab_pmap:
     c_area, c_scale = st.columns([3, 2])
     area = c_area.radio("Area", ["Kanto and Kansai", "Kanto (Tokyo area)", "Kansai (Osaka area)",
                                  "Selected prefectures"], horizontal=True, key="pmap_area")
-    pscale = c_scale.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True, key="pmap_scale",
-                           help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
-    p_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False, key="pmap_alert_lines")
+    pstyle = c_scale.radio("Map style", ["Shaded", "Bubbles"], horizontal=True, key="pmap_style",
+                           help="Shaded: every prefecture colored by its level. Bubbles: a gray map with a bubble "
+                                "for each selected prefecture, sized by reports per sentinel site.")
+    bubbles = pstyle == "Bubbles"
+    if bubbles:
+        pscale, p_alert = "IDWR levels", False
+    else:
+        pscale = c_scale.radio("Shade prefectures by", ["IDWR levels", "Continuous"], horizontal=True,
+                               key="pmap_scale",
+                               help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
+        p_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False,
+                            key="pmap_alert_lines")
+
+    def pmap(codes, view, height):
+        return bubble_map(m_week, codes, view, height) if bubbles else \
+            prefecture_map(m_week, codes, view, height, pscale, cap, p_alert)
     if area == "Kanto and Kansai":
         mc1, mc2 = st.columns(2)
         for col, v, nm in ((mc1, "Kanto (Tokyo area)", "kanto"), (mc2, "Kansai (Osaka area)", "kansai")):
             with col:
                 st.markdown(f"**{v}** · {map_week}")
-                map_with_reset(prefecture_map(m_week, VIEWS[v]["codes"], v, 460, pscale, cap, p_alert), nm)
+                map_with_reset(pmap(VIEWS[v]["codes"], v, 460), nm)
         in_view = VIEWS["Kanto (Tokyo area)"]["codes"] + VIEWS["Kansai (Osaka area)"]["codes"]
     elif area == "Selected prefectures":
         in_view = m_week[m_week["prefecture"].isin(chosen)]["pref_code"].tolist()
@@ -978,16 +1054,22 @@ with tab_pmap:
             st.info("Add at least one prefecture in the sidebar to see this map.")
         else:
             st.markdown(f"**Selected prefectures** · reports per sentinel site · {map_week}")
-            map_with_reset(prefecture_map(m_week, in_view, "selection", 540, pscale, cap, p_alert), "selection")
+            map_with_reset(pmap(in_view, "selection", 540), "selection")
     else:
         in_view = VIEWS[area]["codes"]
         st.markdown(f"**{area}** · reports per sentinel site · {map_week}")
-        map_with_reset(prefecture_map(m_week, in_view, area, 540, pscale, cap, p_alert), "area")
-    if pscale == "IDWR levels":
-        level_legend()
-    st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue"
-               + ("; prefectures with a C2 alert this week in black" if p_alert else "")
-               + ". Hover any prefecture for its numbers, including C2 and whether it alerted.")
+        map_with_reset(pmap(in_view, area, 540), "area")
+    if bubbles:
+        st.caption("Bubble area shows reports per sentinel site, on one scale for all prefectures, in each "
+                   "selected prefecture's chart color. Add prefectures in the sidebar to add bubbles. "
+                   "Hover any prefecture for its value.")
+    else:
+        if pscale == "IDWR levels":
+            level_legend()
+        st.caption("Prefectures outside the area are faded. Selected prefectures are outlined in dark blue and "
+                   "marked with a dot in their chart color"
+                   + ("; prefectures with a C2 alert this week in black" if p_alert else "")
+                   + ". Hover any prefecture for its numbers, including C2 and whether it alerted.")
     if in_view:
         ranked_table(m_week, in_view, f"Prefectures in this area ranked by reports per sentinel, {map_week}")
 
@@ -997,14 +1079,14 @@ with tab_jmap:
                       help="Five bands: under 1.0, then 1.0 to 9.99, 10 to 19.99, 20 to 29.99, and 30 and over.")
     j_alert = st.toggle("Outline prefectures with a C2 alert this week (black)", value=False, key="jmap_alert_lines")
     st.markdown(f"**{disease}: reports per sentinel site in every prefecture** · {map_week}")
-    map_with_reset(prefecture_map(m_week, list(range(1, 48)), "All Japan", 680, jscale, cap, j_alert), "japan")
+    map_with_reset(prefecture_map(m_week, list(range(1, 48)), "All Japan", 900, jscale, cap, j_alert), "japan")
     if jscale == "IDWR levels":
         level_legend()
     st.caption(("Five bands: under 1.0, then steps up to the warning level of 30. " if jscale == "IDWR levels" else
                 f"One warm scale from cream to dark red; the darkest step starts at the 98th percentile of the "
                 f"season ({cap:.1f}) so a few extreme values do not flatten the rest. ")
                + "Labels show the 8 highest prefectures, your selected prefectures and Okinawa. "
-               + "Selected prefectures are outlined in dark blue"
+               + "Selected prefectures are outlined in dark blue and marked with a dot in their chart color"
                + ("; prefectures with a C2 alert this week in black. " if j_alert else ". ")
                + ISLANDS_NOTE)
     ranked_table(m_week, list(range(1, 48)), f"All prefectures ranked by reports per sentinel, {map_week}")
@@ -1080,7 +1162,7 @@ with tab_alerts:
 # ---- Summary table tab -------------------------------------------------------------
 with tab_table:
     st.write(f"Weeks {start_wk} to {end_wk} (set with Weeks shown in the sidebar). "
-             "All 47 prefectures; click a column header to sort.")
+             "The four cards summarize all 47 prefectures.")
     ds = d[in_window]
     rows = []
     for (code, p), s in ds.groupby(["pref_code", "prefecture"]):
@@ -1121,7 +1203,19 @@ with tab_table:
             f"<div class='name' style='color:{accent}'>{name}</div><div class='big'>{big}</div>"
             f"<div class='sub'>{sub}</div></div>", unsafe_allow_html=True)
     st.write("")
-    st.dataframe(summ, hide_index=True, width="stretch", height=600,
+    table_scope = st.radio("Table shows", ["Selected prefectures", "All 47 prefectures"],
+                           index=0, horizontal=True, key="table_scope")
+    if table_scope == "Selected prefectures":
+        shown = summ[summ["Prefecture"].isin(chosen)].copy()
+        shown["_order"] = shown["Prefecture"].map({p: i for i, p in enumerate(chosen)})
+        shown = shown.sort_values("_order").drop(columns="_order")
+        st.caption(f"{len(shown)} selected in the sidebar; click a column header to sort."
+                   if len(shown) else "No prefectures selected. Add prefectures in the sidebar, or choose All 47.")
+    else:
+        st.caption("All 47 prefectures; click a column header to sort.")
+        shown = summ
+    if len(shown):
+        st.dataframe(shown, hide_index=True, width="stretch", height=min(600, 36 * (len(shown) + 1) + 4),
                  column_config={f"Reports per sentinel, {map_week}": st.column_config.NumberColumn(format="%.2f"),
                                 "Peak": st.column_config.NumberColumn(format="%.2f"),
                                 "Lead (weeks)": st.column_config.NumberColumn(
@@ -1157,7 +1251,7 @@ with tab_help:
   the five IDWR color bands or a continuous scale.
 - **Alerts** runs EARS C2 on each selected prefecture and marks the weeks a surveillance system would have raised
   an alert. Move the threshold slider to see how the count changes.
-- **Summary Table** gives every prefecture's peak, its onset week (sustained 1.0), its first C2 alert, the lead
+- **Summary Table** gives, for the selected prefectures or all 47, each prefecture's peak, its onset week (sustained 1.0), its first C2 alert, the lead
   between them, and the number of false alarms next to the lead.
 - **Download the plotted data** saves exactly what is on the chart as a CSV file.
 """)
