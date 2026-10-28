@@ -2,9 +2,12 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v20
+# Version:  v21
 #
 # Version log
+#   v21 (2026-10-28): Maps no longer zoom when the page scrolls over them (use + and -);
+#        each region map has a Reset button and the region maps line up; the tab bar
+#        stays at the top while scrolling; the Alert column reads Yes or No.
 #   v20 (2026-10-28): The Prefecture Map opens on "Region of each selected prefecture": a gray
 #        map of the region (Hokkaido, Tohoku, Kanto, Chubu, Kinki, Chugoku, Shikoku, Kyushu,
 #        Okinawa) with a bubble on each selected prefecture, one map per region.
@@ -118,7 +121,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v20"
+VERSION = "v21"
 
 # Regions used by the Prefecture Map (JIS prefecture codes).
 REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
@@ -205,7 +208,7 @@ VIEWS = {
 CHARTCFG = {"displayModeBar": True, "displaylogo": False, "scrollZoom": False,
             "modeBarButtons": [["toImage", "zoomIn2d", "zoomOut2d", "autoScale2d", "resetScale2d"]],
             "toImageButtonOptions": {"format": "png", "scale": 2, "filename": "japan_influenza_chart"}}
-MAPCFG = {"displayModeBar": True, "displaylogo": False, "scrollZoom": True,
+MAPCFG = {"displayModeBar": True, "displaylogo": False, "scrollZoom": False,
           "modeBarButtons": [["toImage", "zoomInGeo", "zoomOutGeo", "resetGeo"]],
           "toImageButtonOptions": {"format": "png", "scale": 2, "filename": "japan_influenza_map"}}
 # Plotly downloads a world outline file for every geo map from its CDN. A copy
@@ -666,7 +669,7 @@ def map_with_reset(fig, name, label="⟲  Reset map view"):
             st.session_state[cnt_key] += 1
     fig.update_layout(uirevision=f"{name}-{st.session_state[cnt_key]}")
     show(fig, width="stretch", config=MAPCFG, key=f"{name}_{st.session_state[cnt_key]}")
-    st.caption("Scroll or drag to zoom and pan. Press Reset map view above to return to the starting view.")
+    st.caption("Use + and − at the top right of the map to zoom, and drag to move. Press Reset map view to return to the starting view.")
 
 
 def level_legend():
@@ -681,6 +684,7 @@ def ranked_table(m, codes_in_view, title):
     keep = ["prefecture", "per_sentinel"] + (["sentinels"] if has_sentinels else []) + ["c2", "alert", "population_2020"]
     t = m[m["pref_code"].isin(codes_in_view)][keep].sort_values("per_sentinel", ascending=False).reset_index(drop=True)
     t.index += 1
+    t["alert"] = np.where(t["alert"].astype(bool), "Yes", "No")
     t = t.rename(columns={"prefecture": "Prefecture", "per_sentinel": "Reports per sentinel",
                           "sentinels": "Sentinel sites", "c2": "C2", "alert": "Alert",
                           "population_2020": "Population (2020)"})
@@ -720,6 +724,9 @@ st.markdown(
     .tile .sub {font-size: 0.8rem; color: #52514e; margin-top: 6px; line-height: 1.35;}
     /* Cards in the portfolio site's style: a pastel fill, a border a shade
        deeper, and a 6px edge in the card's own color. */
+    div[data-testid="stTabs"] [role="tablist"] {position: sticky; top: 3.75rem; z-index: 99;
+        box-shadow: 0 -30px 0 30px #ffffff; border-bottom: 1px solid #e6e6e2;
+        background: #ffffff;}
     .stile {border-radius: 10px; padding: 16px 18px 14px 18px; height: 100%; min-height: 170px;
             box-sizing: border-box; border: 1px solid transparent; border-left-width: 6px;}
     .stile .name {font-size: 0.95rem; font-weight: 600;}
@@ -1056,7 +1063,9 @@ with tab_pmap:
                 r = REGION_OF[int(sel.loc[p, "pref_code"])]
                 if r not in regions:
                     regions.append(r)
+            per_region = {r: sum(REGION_OF[int(sel.loc[p, "pref_code"])] == r for p in names) for r in regions}
             for i in range(0, len(regions), 2):
+                row_lines = max(per_region[r] for r in regions[i:i + 2])
                 for col, r in zip(st.columns(2), regions[i:i + 2]):
                     with col:
                         lines = []
@@ -1069,9 +1078,9 @@ with tab_pmap:
                                    f"background:{colors.get(p, MAP_SELECT)};margin-right:6px'></span>")
                             lines.append(f"{dot}**{p}** · {row['per_sentinel']:.2f} per sentinel · C2 {c2t}"
                                          + (" · **alert**" if bool(row["alert"]) else ""))
+                        lines += ["&nbsp;"] * (row_lines - len(lines))
                         st.markdown(f"**{r}**<br>" + "<br>".join(lines), unsafe_allow_html=True)
-                        show(bubble_map(m_week, REGIONS[r], f"region-{r}", 380), width="stretch",
-                             config=MAPCFG, key=f"region_{r}")
+                        map_with_reset(bubble_map(m_week, REGIONS[r], f"region-{r}", 380), f"region_{r}")
     elif area == "Kanto and Kansai":
         mc1, mc2 = st.columns(2)
         for col, v, nm in ((mc1, "Kanto (Tokyo area)", "kanto"), (mc2, "Kansai (Osaka area)", "kansai")):
