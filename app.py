@@ -2,9 +2,12 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v12
+# Version:  v13
 #
 # Version log
+#   v13 (2026-10-28): Summary Table lead range is written in words (for example
+#        "1 week after onset to 7 weeks before"), with no minus sign, and the
+#        Lead column explains that a negative value means the alert came after onset.
 #   v12 (2026-10-28): The red outlines for prefectures with a C2 alert are off
 #       by default on the Prefecture Map and Japan Map. In a rising week most
 #       prefectures alert (35 of 47 in 2026 week 41), so the red lines crowded
@@ -97,7 +100,24 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v12"
+VERSION = "v13"
+
+
+def lead_range_text(leads):
+    """Describe the spread of lead times in words, with no minus sign."""
+    def wk(n):
+        n = abs(int(n))
+        return f"{n} week{'s' if n != 1 else ''}"
+    lo, hi = int(leads.min()), int(leads.max())
+    def side(n):
+        if n > 0:
+            return f"{wk(n)} before"
+        if n < 0:
+            return f"{wk(n)} after"
+        return "the same week"
+    if lo >= 0:
+        return f"Range {lo} to {hi} weeks before onset"
+    return f"From {side(lo)} onset<br>to {side(hi)}"
 ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 STATIC_DIR = ROOT / "static"
@@ -1087,7 +1107,7 @@ with tab_table:
         ("Alert came first", f"{int((leads > 0).sum())} of {len(leads)}", "#FBE7E6", "#F0CBC8", "#A33E50",
          "First C2 alert before<br>the onset week"),
         ("Median lead", f"{leads.median():.0f} weeks" if len(leads) else "n/a", "#FFF7D1", "#F7E08A", "#8C6D00",
-         f"Range {leads.min():.0f} to {leads.max():.0f} weeks" if len(leads) else "No prefecture with a lead"),
+         lead_range_text(leads) if len(leads) else "No prefecture with a lead"),
         ("False alarms", f"{int(summ['False alarms'].sum())}", "#F1EBF8", "#DACDEC", "#6A4C9C",
          f"Alerts below 1.0 with no crossing<br>in the next {FA_WINDOW} weeks"),
     ]
@@ -1100,7 +1120,9 @@ with tab_table:
     st.dataframe(summ, hide_index=True, width="stretch", height=600,
                  column_config={f"Reports per sentinel, {map_week}": st.column_config.NumberColumn(format="%.2f"),
                                 "Peak": st.column_config.NumberColumn(format="%.2f"),
-                                "Lead (weeks)": st.column_config.NumberColumn(format="%d")})
+                                "Lead (weeks)": st.column_config.NumberColumn(
+                                    format="%d", help="Weeks the first C2 alert came before onset. "
+                                    "0 means the same week; a negative number means the alert came after onset.")})
     st.caption("Onset = the first week of the unbroken run at or above 1.0 per sentinel that contains the peak. "
                f"First C2 alert = the first alert from {ONSET_LOOKBACK} weeks before the onset onward; earlier alerts "
                "count toward false alarms. Lead = onset week minus first alert week; positive means the alert came "
