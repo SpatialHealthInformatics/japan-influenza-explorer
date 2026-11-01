@@ -2,9 +2,10 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v24
+# Version:  v25
 #
 # Version log
+#   v25 (2026-11-01): Sidebar is open when the app first loads and stays open (collapse button hidden).
 #   v24 (2026-10-31): English / 日本語 switch at the top of the sidebar (i18n.py). English is the default;
 #       add ?lang=ja to the address to open the Japanese version.
 #   v23 (2026-10-31): About text: "Source:" with a colon.
@@ -128,7 +129,7 @@ import streamlit as st
 
 import i18n
 
-VERSION = "v24"
+VERSION = "v25"
 
 # Regions used by the Prefecture Map (JIS prefecture codes).
 REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
@@ -707,11 +708,14 @@ def ranked_table(m, codes_in_view, title):
 # ---- Page layout -------------------------------------------------------------
 i18n.init_language()
 i18n.install()
-st.set_page_config(page_title="Japan Influenza Surveillance Explorer", page_icon="📈", layout="wide")
+st.set_page_config(page_title="Japan Influenza Surveillance Explorer", page_icon="📈", layout="wide", initial_sidebar_state="expanded")
 
 st.markdown(
     """
     <style>
+    /* Sidebar stays open: hide the collapse button */
+    [data-testid="stSidebarCollapseButton"], [data-testid="stSidebarCollapsedControl"],
+    [data-testid="collapsedControl"] { display: none !important; }
     /* Century Gothic where it is installed; Didact Gothic, a free look-alike,
        for everyone else. The same pair the portfolio site uses. */
     @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
