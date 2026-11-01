@@ -2,9 +2,11 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v29
+# Version:  v30
 #
 # Version log
+#   v30 (2026-11-01): The sidebar opener uses st.iframe, which replaces st.components.v1.html
+#       (deprecated in Streamlit); the old call stays as a fallback. Nothing else changed.
 #   v29 (2026-11-01): The sidebar opens on every page load, also for a visitor whose browser remembers it closed. The open and close arrows are lime green.
 #   v28 (2026-11-01): README rewritten for visitors (live link, languages, data notice, sources). App behavior unchanged.
 #   v27 (2026-11-01): Data notice reworded: the TriNetX data is not public, so it is not included.
@@ -134,7 +136,7 @@ import streamlit as st
 
 import i18n
 
-VERSION = "v29"
+VERSION = "v30"
 
 # Regions used by the Prefecture Map (JIS prefecture codes).
 REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
@@ -717,8 +719,7 @@ st.set_page_config(page_title="Japan Influenza Surveillance Explorer", page_icon
 
 # Open the sidebar once per page load. Streamlit remembers a closed sidebar in the browser and then
 # ignores initial_sidebar_state, so a visitor who closed it once would land on the main page.
-import streamlit.components.v1 as components
-components.html("""<script>
+_OPEN_SIDEBAR = """<script>
 (function () {
   try {
     var p = window.parent, d = p.document;
@@ -734,7 +735,13 @@ components.html("""<script>
     }, 250);
   } catch (e) {}
 })();
-</script>""", height=0)
+</script>"""
+# st.iframe replaces st.components.v1.html in newer Streamlit; the old call is the fallback.
+if hasattr(st, "iframe"):
+    st.iframe(_OPEN_SIDEBAR, height=1)
+else:
+    import streamlit.components.v1 as components
+    components.html(_OPEN_SIDEBAR, height=0)
 
 st.markdown(
     """
