@@ -2,9 +2,12 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v22
+# Version:  v24
 #
 # Version log
+#   v24 (2026-10-31): English / 日本語 switch at the top of the sidebar (i18n.py). English is the default;
+#       add ?lang=ja to the address to open the Japanese version.
+#   v23 (2026-10-31): About text: "Source:" with a colon.
 #   v22 (2026-10-28): Selected prefectures on the shaded maps are outlined in bright blue
 #        with a white edge, so the outline stands out from the red shading.
 #   v21 (2026-10-28): Maps no longer zoom when the page scrolls over them (use + and -);
@@ -123,7 +126,9 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 import streamlit as st
 
-VERSION = "v22"
+import i18n
+
+VERSION = "v24"
 
 # Regions used by the Prefecture Map (JIS prefecture codes).
 REGIONS = {"Hokkaido": [1], "Tohoku": list(range(2, 8)), "Kanto": list(range(8, 15)),
@@ -155,7 +160,7 @@ IDWR_URL = "https://id-info.jihs.go.jp/surveillance/idwr/"
 SAMPLE_PATH = ROOT / "sample" / "idwr_weekly_sample.csv"
 ALLOW_SAMPLE = os.environ.get("JIE_SAMPLE") == "1"
 
-FONT_STACK = "Century Gothic, CenturyGothic, Didact Gothic, sans-serif"
+FONT_STACK = "Century Gothic, CenturyGothic, Didact Gothic, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
 pio.templates["appfont"] = go.layout.Template(layout=dict(font=dict(family=FONT_STACK)))
 pio.templates.default = "plotly_white+appfont"
 
@@ -700,6 +705,8 @@ def ranked_table(m, codes_in_view, title):
 
 
 # ---- Page layout -------------------------------------------------------------
+i18n.init_language()
+i18n.install()
 st.set_page_config(page_title="Japan Influenza Surveillance Explorer", page_icon="📈", layout="wide")
 
 st.markdown(
@@ -709,7 +716,7 @@ st.markdown(
        for everyone else. The same pair the portfolio site uses. */
     @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
     html, body, [class*="st-"], .stApp, button, input, select, textarea {
-        font-family: "Century Gothic", CenturyGothic, "Didact Gothic", sans-serif;
+        font-family: "Century Gothic", CenturyGothic, "Didact Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "Noto Sans JP", sans-serif;
     }
     /* Streamlit draws its icons with a ligature font. The rule above would turn
        them into their literal names, such as keyboard_double_arrow_left, so the
@@ -789,6 +796,7 @@ def add_prefecture():
 
 diseases = sorted(weekly["disease"].unique())
 with st.sidebar:
+    i18n.language_switch()
     st.header("Prefectures")
     all_prefs = list(weekly.drop_duplicates("pref_code").sort_values("pref_code")["prefecture"])
     st.selectbox("Add a prefecture", [p for p in all_prefs if p not in st.session_state.prefs],
@@ -1311,7 +1319,7 @@ with tab_about:
                  + (", New Year weeks left out of baselines" if drop_holidays else ""))
     notice(NOTICE_FULL)
     st.markdown(f"""
-**Source.** Japan Institute for Health Security (JIHS, formerly NIID), Infectious Disease Weekly Report (IDWR),
+**Source:** Japan Institute for Health Security (JIHS, formerly NIID), Infectious Disease Weekly Report (IDWR),
 weekly reports of sentinel-surveillance diseases by prefecture ([link]({IDWR_URL})). The unit is reports per
 sentinel site per week. About 5,000 sentinel clinics and hospitals report influenza nationwide. The number differs
 by prefecture and changes from week to week, so per-sentinel values, not raw counts, are comparable across
