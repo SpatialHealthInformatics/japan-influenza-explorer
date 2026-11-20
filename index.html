@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!-- Version: v5 (2026-11-01). v5: the language choice lasts only for the visit (English again next time, unless the browser is Japanese); no Google Translate prompt. v4: language switch both at the top of the sidebar and at the right of the top bar. v3: switch at the top of the sidebar. v2: site version shown in the footer. v1: English / 日本語 switch in the top bar; both languages are in this one file. -->
+<html lang="en" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spatial Health Informatics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+<style>
+    :root { --ink:#14212B; --muted:#4B5963; --line:#D9E0DC; --soft:#ECF1EE; --paper:#FFFFFF; --ground:#F4F6F5; --accent:#1F5A73; --accent-dark:#174559; --accent-soft:#DDEBF1; --banner:#1D3F73; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Century Gothic", CenturyGothic, "Didact Gothic", sans-serif; color: var(--ink); background: var(--paper); line-height: 1.6; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    header { background: var(--banner); color: #fff; }
+    header .wrap { padding-top: 32px; padding-bottom: 14px; }
+    h1 { font-size: 2.2rem; margin: 0 0 10px; letter-spacing: -0.01em; color: #fff; }
+    .lede { font-size: 1.12rem; margin: 0; max-width: 720px; color: #E6EDF5; }
+    section { padding: 36px 0 8px; }
+    h2 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+    .framework { margin: 0; }
+    .framework img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; display: block; }
+    .framework figcaption { margin-top: 10px; font-size: 0.92rem; color: var(--muted); }
+    .areas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .area { background: none; border: none; border-top: 3px solid var(--line); padding: 12px 2px 4px; }
+    .area h3 { margin: 0 0 6px; font-size: 1.02rem; color: var(--ink); }
+    .area p { margin: 0; font-size: 0.95rem; }
+    .card { display: block; text-decoration: none; color: inherit; background: var(--ground); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px; margin-bottom: 14px; }
+    .card h3 { margin: 0 0 6px; font-size: 1.12rem; color: var(--ink); }
+    .card p { margin: 0; }
+    .card.linked { background: var(--accent-soft); border: 1px solid #B9D3E0; border-left: 6px solid var(--accent); }
+    .card.linked h3 { color: var(--accent); }
+    a.card.linked { cursor: pointer; transition: box-shadow .15s, transform .15s; }
+    a.card.linked:hover { box-shadow: 0 4px 14px rgba(20,33,43,.14); transform: translateY(-2px); }
+    a.card.linked:hover .btn { background: var(--accent-dark); }
+    .btn { display: inline-block; margin-top: 14px; margin-right: 10px; background: var(--accent); color: #fff; font-weight: bold; font-size: 0.92rem; padding: 8px 16px; border-radius: 6px; text-decoration: none; }
+    a.btn:hover { background: var(--accent-dark); }
+    .meta { margin-top: 10px; font-size: 0.85rem; color: var(--muted); }
+    .note { margin-top: 8px; font-size: 0.85rem; color: var(--muted); font-style: italic; }
+    .num { display:inline-block; min-width:2.6em; font-weight:700; color:var(--c, var(--accent)); opacity:0.5; font-variant-numeric:tabular-nums; }
+    .snum { display:inline-block; width:2.1em; opacity:0.55; font-variant-numeric:tabular-nums; }
+    .status { display: inline-block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border: 1px solid #C5CDC8; background: #fff; border-radius: 999px; padding: 1px 9px; margin-left: 8px; vertical-align: middle; }
+    footer { margin: 40px 0 0; padding: 18px 0 48px; border-top: 1px solid var(--line); font-size: 0.88rem; color: var(--muted); }
+
+    .card.linked.c-blue   { background:#E6F0FA; border-color:#C9DCF0; border-left-color:#2F6FB0; }
+    .card.linked.c-green  { background:#E4F3EA; border-color:#C6E3D1; border-left-color:#276B43; }
+    .card.linked.c-yellow { background:#FFF7D1; border-color:#F7E08A; border-left-color:#F5B800; }
+    .card.linked.c-yellow h3 { color:#8C6D00; }
+    .card.linked.c-yellow .btn { background:#F5B800; color:#2B2200; }
+    .card.linked.c-yellow a.btn:hover { background:#E0A800; filter:none; }
+    .card.linked.c-pink   { background:#FBE7E6; border-color:#F0CBC8; border-left-color:#A33E50; }
+    .card.linked.c-purple { background:#F1EBF8; border-color:#DACDEC; border-left-color:#6A4C9C; }
+    .card.linked.c-teal   { background:#E3F2F3; border-color:#C3E0E2; border-left-color:#16707E; }
+    .c-blue h3, .c-blue .btn { --c:#2F6FB0; } .c-green h3, .c-green .btn { --c:#276B43; }
+    .c-yellow h3, .c-yellow .btn { --c:#F5B800; } .c-pink h3, .c-pink .btn { --c:#A33E50; }
+    .c-purple h3, .c-purple .btn { --c:#6A4C9C; } .c-teal h3, .c-teal .btn { --c:#16707E; }
+    .card.linked h3 { color: var(--c, var(--accent)); }
+    .card.linked .btn { background: var(--c, var(--accent)); }
+    a.card.linked:hover .btn, .card.linked a.btn:hover { filter: brightness(0.88); background: var(--c, var(--accent)); }
+
+    /* sidebar layout */
+    .layout { display: flex; min-height: 100vh; }
+    .side { width: 270px; flex-shrink: 0; background: var(--banner); border-right: 1px solid #16325C; position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 28px 18px 24px; display: flex; flex-direction: column; }
+    .side nav a { display: block; color: #fff; text-decoration: none; border-radius: 6px; }
+    .side nav a:hover { background: rgba(255,255,255,.12); }
+    .side nav a.top { font-weight: bold; font-size: 0.98rem; padding: 7px 10px; margin-top: 4px; }
+    .side nav a.sub { font-size: 0.86rem; color: #D5E0EE; padding: 5px 10px 5px 22px; line-height: 1.35; position: relative; }
+    .side nav a.sub::before { content: ""; position: absolute; left: 9px; top: 0.72em; width: 7px; height: 7px; border-radius: 50%; background: var(--dot, #9FB3CC); }
+    .side nav a.active { background: rgba(255,255,255,.18); color: #fff; }
+    .side .contact { margin-top: auto; padding: 20px 10px 0; font-size: 0.82rem; color: #C9D6E6; }
+    .content { flex: 1; min-width: 0; }
+    .content header .wrap, .content main.wrap { max-width: 1000px; margin: 0 auto; padding-left: 44px; padding-right: 44px; }
+    section, .card { scroll-margin-top: 16px; }
+    @media (max-width: 800px) {
+      .layout { display: flex; flex-direction: column; }
+      .content { display: contents; }
+      .content header { order: 1; }
+      .side { order: 2; position: static; width: auto; height: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 10px 14px; }
+      .side nav { display: flex; gap: 6px; flex-wrap: wrap; }
+      .side nav a.sub, .side .contact { display: none; }
+      .content main { order: 3; }
+      .content header .wrap, .content main.wrap { padding-left: 20px; padding-right: 20px; }
+    }
+    .topnav { position: sticky; top: 0; z-index: 5; background: var(--banner); border-top: 1px solid rgba(255,255,255,.22); }
+    .topnav .wrap { display: flex; gap: 6px; padding-top: 8px; padding-bottom: 8px; max-width: 1000px; margin: 0 auto; padding-left: 32px; padding-right: 44px; }
+    .topnav a { color: #fff; font-weight: bold; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 0.95rem; }
+    .topnav a:hover { background: rgba(255,255,255,.12); }
+    .topnav a.active { background: rgba(255,255,255,.2); color: #fff; }
+    section, .card { scroll-margin-top: 64px; }
+    @media (max-width: 800px) {
+      .side { display: none; }
+      .topnav { order: 2; }
+      .topnav .wrap { padding-left: 8px; padding-right: 14px; }
+    }
+    a:focus-visible { outline: 3px solid #F5B800; outline-offset: 2px; }
+    .card.linked.c-lav { background:#FFF8F7; border-color:#F0CBC8; border-left-color:#A33E50; }
+    .c-lav h3 { --c:#A33E50; }
+    .card.linked.c-lav .btn { background:#fff; color:#A33E50; border:1.5px solid #A33E50; padding:6.5px 14.5px; }
+    a.card.linked.c-lav:hover .btn { background:#FBE7E6; filter:none; }
+    .side nav a.sub2 { padding-left:40px; font-size:0.82rem; }
+    .side nav a.sub2::before { left:27px; }
+
+    /* English / 日本語 switch: both languages are in the page; the html lang attribute picks one */
+    html:not([lang="ja"]) .ja { display: none !important; }
+    html[lang="ja"] .en { display: none !important; }
+    html[lang="ja"] body { font-family: "Century Gothic", CenturyGothic, "Didact Gothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, "Noto Sans JP", sans-serif; }
+    .langswitch { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+    .langswitch button { font: inherit; font-size: 0.88rem; font-weight: bold; color: #fff; background: transparent; border: 1.5px solid rgba(255,255,255,.55); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+    .langswitch button:hover { background: rgba(255,255,255,.12); }
+    .langswitch button[aria-pressed="true"] { background: #c9f7a5; color: #1f3d0c; border-color: #7fd44c; }
+    .topnav a, .langswitch button { white-space: nowrap; }
+    .side-lang { padding: 0 10px 14px; }
+    .side .langswitch { margin-left: 0; }
+    /* The switch is in two places: the top of the sidebar (computers) and the right of the top bar. */
+    @media (max-width: 800px) {
+      .topnav .wrap { flex-wrap: wrap; row-gap: 6px; }
+      .topnav a { padding: 6px 8px; font-size: 0.9rem; }
+      .langswitch button { padding: 3px 10px; font-size: 0.82rem; }
+    }
+</style>
+<script>
+  // Pick the language before the page draws: ?lang=ja or ?lang=en, then the choice made in this visit
+  // (kept only until the tab is closed),
+  // then the browser language (Japanese browsers open in Japanese).
+  (function () {
+    var lang = "en";
+    try {
+      var q = new URLSearchParams(location.search).get("lang");
+      var saved = null;
+      try { localStorage.removeItem("shi-lang"); } catch (e) {}  // older versions saved the choice for good
+      try { saved = sessionStorage.getItem("shi-lang"); } catch (e) {}
+      if (q === "ja" || q === "en") lang = q;
+      else if (saved === "ja" || saved === "en") lang = saved;
+      else if ((navigator.language || "").toLowerCase().indexOf("ja") === 0) lang = "ja";
+    } catch (e) {}
+    document.documentElement.lang = lang;
+  })();
+</script>
+</head>
+<body>
+  <div class="layout">
+  <aside class="side">
+    <div class="side-lang">
+      <span class="langswitch" role="group" aria-label="Language / 言語">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ja" lang="ja">日本語</button>
+      </span>
+    </div>
+    <nav>
+      <a class="top" href="#framework"><span class="en">Framework</span><span class="ja" lang="ja">フレームワーク</span></a>
+      <a class="top" href="#focus"><span class="en">Focus areas</span><span class="ja" lang="ja">重点分野</span></a>
+      <a class="top" href="#projects"><span class="en">Projects</span><span class="ja" lang="ja">プロジェクト</span></a>
+      <a class="sub" href="#p-asthma-and-environmental-justice-in-cont" style="--dot:#A98CDE"><span class="snum">01</span><span class="en">Richmond: Asthma and Environmental Justice</span><span class="ja" lang="ja">リッチモンド：ぜんそくと環境正義</span></a>
+      <a class="sub" href="#p-covid-19-surveillance-explorer" style="--dot:#6CC5CF"><span class="snum">02</span><span class="en">COVID-19 Surveillance Explorer</span><span class="ja" lang="ja">COVID-19サーベイランス・エクスプローラー</span></a>
+      <a class="sub" href="#p-environmental-exposure-and-independent-l" style="--dot:#F2C75C"><span class="snum">03</span><span class="en">California Exposure and Independent Living</span><span class="ja" lang="ja">カリフォルニア州の環境曝露と自立生活</span></a>
+      <a class="sub" href="#p-automated-surveillance-to-decision-pipel" style="--dot:#7CC79B"><span class="snum">04</span><span class="en">Automated Surveillance-to-Decision Pipeline</span><span class="ja" lang="ja">サーベイランスから意思決定までの自動化パイプライン</span></a>
+      <a class="sub" href="#p-influenza-surveillance-research-in-japan" style="--dot:#EE9AA6"><span class="snum">05</span><span class="en">Influenza Surveillance Research in Japan</span><span class="ja" lang="ja">日本のインフルエンザ・サーベイランス研究</span></a>
+      <a class="sub sub2" href="#p-japan-idwr-explorer" style="--dot:#EE9AA6"><span class="snum">05a</span><span class="en">Japan IDWR Explorer (all 19 diseases)</span><span class="ja" lang="ja">日本IDWRエクスプローラー（全19疾患）</span></a>
+      <a class="sub sub2" href="#p-japan-influenza-explorer" style="--dot:#EE9AA6"><span class="snum">05b</span><span class="en">Japan Influenza Explorer (influenza only)</span><span class="ja" lang="ja">日本インフルエンザ・エクスプローラー（インフルエンザのみ）</span></a>
+      <a class="sub" href="#p-interactive-story-map" style="--dot:#7FB0E3"><span class="snum">06</span><span class="en">Interactive Story Map</span><span class="ja" lang="ja">インタラクティブ・ストーリーマップ</span></a>
+      <a class="sub" href="#p-public-health-dashboard" style="--dot:#A98CDE"><span class="snum">07</span><span class="en">Public Health Dashboard</span><span class="ja" lang="ja">公衆衛生ダッシュボード</span></a>
+      <a class="sub" href="#p-disability-inclusion-recommendation-prog" style="--dot:#6CC5CF"><span class="snum">08</span><span class="en">Disability Inclusion Progress Report (members only)</span><span class="ja" lang="ja">障害者インクルージョン進捗報告（メンバー限定）</span></a>
+      <a class="sub" href="#p-exposure-lens-singapore" style="--dot:#F2C75C"><span class="snum">09</span><span class="en">Exposure Lens Singapore</span><span class="ja" lang="ja">Exposure Lens シンガポール</span></a>
+      <a class="sub" href="#p-brain-volume-composition" style="--dot:#7CC79B"><span class="snum">10</span><span class="en">Brain Volume Composition</span><span class="ja" lang="ja">脳容積の構成</span></a>
+      <a class="sub" href="#p-housing-environment-and-health-across-th" style="--dot:#9FB3CC"><span class="snum">11</span><span class="en">Three Cities Comparison</span><span class="ja" lang="ja">3都市の比較</span></a>
+      <a class="sub" href="#p-informatics-for-health-equity" style="--dot:#7FB0E3"><span class="snum">12</span><span class="en">Informatics for Health Equity</span><span class="ja" lang="ja">健康の公平性のためのインフォマティクス</span></a>
+    </nav>
+    <div class="contact">Genie Tang<br>noriko [at] berkeley [dot] edu</div>
+  </aside>
+  <div class="content">
+  <header>
+    <div class="wrap">
+      <h1>Spatial Health Informatics</h1>
+      <p class="lede"><span class="en">Using spatial statistics, public health surveillance data, and interactive tools to understand where health risks concentrate and how the places people live influence their health</span><span class="ja" lang="ja">空間統計、公衆衛生サーベイランスデータ、インタラクティブなツールを使い、健康リスクがどこに集中しているか、また人々が暮らす場所が健康にどう影響するかを明らかにします。</span></p>
+    </div>
+  </header>
+  <nav class="topnav">
+    <div class="wrap">
+      <a href="#framework"><span class="en">Framework</span><span class="ja" lang="ja">フレームワーク</span></a>
+      <a href="#focus"><span class="en">Focus areas</span><span class="ja" lang="ja">重点分野</span></a>
+      <a href="#projects"><span class="en">Projects</span><span class="ja" lang="ja">プロジェクト</span></a>
+      <span class="langswitch" role="group" aria-label="Language / 言語">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="ja" lang="ja">日本語</button>
+      </span>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="framework">
+      <h2><span class="en">Framework</span><span class="ja" lang="ja">フレームワーク</span></h2>
+      <figure class="framework">
+        <img src="framework.jpg" alt="Spatial decision intelligence framework: story map, dashboard, design-relevant predictive modeling, and architectural design simulator, informing buildings, streets and mobility, land use and zoning, housing and ventilation, and green and blue infrastructure">
+        <figcaption><span class="en">A spatial decision intelligence framework for health equity. It moves from historical and current evidence to future scenarios through four components: a story map for place-based context, a dashboard for exploring current patterns, predictive modeling of near-term risk, and an architectural design simulator for comparing design alternatives.</span><span class="ja" lang="ja">健康の公平性のための空間的意思決定インテリジェンスのフレームワークです。過去と現在のエビデンスから将来のシナリオへと、4つの要素で進みます。地域の文脈を伝えるストーリーマップ、現在のパターンを探るダッシュボード、近い将来のリスクの予測モデル、設計案を比べる建築設計シミュレーターです。</span></figcaption>
+        <p style="margin:14px 0 0 0;"><span style="color:var(--muted);font-size:0.95rem;"><span class="en">The dashboard component, built for the Richmond case study:</span><span class="ja" lang="ja">リッチモンドの事例研究のために作ったダッシュボード：</span></span><br>
+        <a class="btn" href="https://richmond-explorer.streamlit.app" target="_blank" rel="noopener"><span class="en">Open the Richmond Spatial Decision Intelligence Explorer ↗</span><span class="ja" lang="ja">リッチモンド空間意思決定インテリジェンス・エクスプローラーを開く ↗</span></a></p>
+      </figure>
+    </section>
+    <section id="focus">
+      <h2><span class="en">Focus Areas</span><span class="ja" lang="ja">重点分野</span></h2>
+      <div class="areas">
+        <div class="area">
+          <h3><span class="en">Spatial Statistics</span><span class="ja" lang="ja">空間統計</span></h3>
+          <p><span class="en">Clustering and hotspot methods such as Moran's I, LISA, and Getis-Ord Gi* to find where outcomes concentrate.</span><span class="ja" lang="ja">モランI、LISA、Getis-Ord Gi*などのクラスター・ホットスポット手法で、健康アウトカムが集中する場所を見つけます。</span></p>
+        </div>
+        <div class="area">
+          <h3><span class="en">Housing and Health Equity</span><span class="ja" lang="ja">住宅と健康の公平性</span></h3>
+          <p><span class="en">How housing conditions, environmental burden, and social vulnerability relate to health across neighborhoods.</span><span class="ja" lang="ja">住宅の状態、環境負荷、社会的脆弱性が、地域ごとの健康とどう関係しているかを調べます。</span></p>
+        </div>
+        <div class="area">
+          <h3><span class="en">Surveillance and Decision Support</span><span class="ja" lang="ja">サーベイランスと意思決定支援</span></h3>
+          <p><span class="en">Turning public health surveillance data into maps and dashboards that support decisions.</span><span class="ja" lang="ja">公衆衛生サーベイランスデータを、意思決定に役立つ地図やダッシュボードにします。</span></p>
+        </div>
+        <div class="area">
+          <h3><span class="en">Interactive Visualization</span><span class="ja" lang="ja">インタラクティブな可視化</span></h3>
+          <p><span class="en">Web-based charts and maps built in Python and ArcGIS so findings can be explored, not only read.</span><span class="ja" lang="ja">PythonとArcGISでウェブ上のグラフや地図を作り、結果を読むだけでなく自分で探れるようにします。</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2><span class="en">Projects</span><span class="ja" lang="ja">プロジェクト</span></h2>
+
+      <a class="card linked c-purple" href="https://richmond-explorer.streamlit.app" target="_blank" rel="noopener" id="p-asthma-and-environmental-justice-in-cont">
+        <h3><span class="num">01</span><span class="en">Asthma and Environmental Justice in Contra Costa County</span><span class="ja" lang="ja">コントラコスタ郡のぜんそくと環境正義</span></h3>
+        <p><span class="en">Spatial analysis of asthma prevalence against PM2.5, NO2, and the CDC/ATSDR Environmental Justice Index. Asthma showed significant spatial clustering (global Moran's I = 0.31, p &lt; 0.01), with high-high clusters along the Richmond and Pittsburg corridor. The interactive explorer rebuilds the analysis on the 2024 index (global Moran's I = 0.69, queen contiguity, 999 permutations) across the 241 county tracts, with the City of Richmond outlined: exposure and burden layers, LISA cluster maps, a bivariate map, and priority tracts where exposure and burden coincide.</span><span class="ja" lang="ja">ぜんそくの有病率を、PM2.5、NO2、CDC/ATSDRの環境正義指数（Environmental Justice Index）と比べた空間分析です。ぜんそくには有意な空間的集積が見られ（全体のモランI = 0.31、p &lt; 0.01）、リッチモンドからピッツバーグにかけての地域に高-高クラスターがありました。インタラクティブなエクスプローラーでは、2024年版の指数を使い、郡内の241の国勢調査区で分析をやり直しています（全体のモランI = 0.69、クイーン隣接、999回の並べ替え）。リッチモンド市の境界を示し、曝露と負荷のレイヤー、LISAクラスター地図、2変量地図、曝露と負荷がともに高い優先地区を表示します。</span></p>
+        <div class="meta"><span class="en">Python · Streamlit · PySAL · Global Moran's I · LISA cluster analysis</span><span class="ja" lang="ja">Python · Streamlit · PySAL · 全体のモランI · LISAクラスター分析</span></div>
+        <span class="btn"><span class="en">Open the explorer ↗</span><span class="ja" lang="ja">エクスプローラーを開く ↗</span></span>
+      </a>
+
+      <a class="card linked c-teal" href="https://covid-explorer.streamlit.app" target="_blank" rel="noopener" id="p-covid-19-surveillance-explorer">
+        <h3><span class="num">02</span><span class="en">COVID-19 Surveillance Explorer</span><span class="ja" lang="ja">COVID-19サーベイランス・エクスプローラー</span></h3>
+        <p><span class="en">An interactive comparison of reported COVID-19 cases and deaths across countries, built on the Johns Hopkins CSSE global time series. Users add countries, switch between daily and cumulative counts and rates per 100,000, and read the data through a world choropleth, spatial cluster analysis, and EARS C2 alerts, the aberration-detection method used in syndromic surveillance.</span><span class="ja" lang="ja">ジョンズ・ホプキンス大学CSSEの世界の時系列データをもとに、国ごとに報告されたCOVID-19の感染者数と死亡者数を比べるインタラクティブなツールです。国を追加し、日別と累計、人口10万人あたりの率を切り替えながら、世界の塗り分け地図、空間クラスター分析、EARS C2アラート（症候群サーベイランスで使われる異常検知の方法）でデータを読めます。</span></p>
+        <div class="meta"><span class="en">Python · Streamlit · Plotly · PySAL · EARS C2</span><span class="ja" lang="ja">Python · Streamlit · Plotly · PySAL · EARS C2</span></div>
+        <span class="btn"><span class="en">Open the explorer ↗</span><span class="ja" lang="ja">エクスプローラーを開く ↗</span></span>
+      </a>
+
+      <a class="card linked c-yellow" href="california-pm25-need.html" target="_blank" rel="noopener" id="p-environmental-exposure-and-independent-l">
+        <h3><span class="num">03</span><span class="en">Environmental Exposure and Independent Living Need in California</span><span class="ja" lang="ja">カリフォルニア州の環境曝露と自立生活のニーズ</span></h3>
+        <p><span class="en">A statewide PM2.5 exposure surface built by ordinary kriging from 127 EPA monitors, crossed with a census tract need index combining disability, living alone, vehicle access, and English proficiency. The analysis identifies 1,112 of 9,048 California tracts where predicted exposure and need are both high.</span><span class="ja" lang="ja">EPAの127の測定局から通常クリギングで作った州全体のPM2.5曝露面を、障害、一人暮らし、車の利用、英語力を組み合わせた国勢調査区のニーズ指数と重ねました。予測曝露とニーズがともに高い地区を、カリフォルニア州の9,048地区のうち1,112地区特定しています。</span></p>
+        <div class="meta"><span class="en">Ordinary kriging · Cross-validation · Composite need index · EPA and ACS data</span><span class="ja" lang="ja">通常クリギング · 交差検証 · 複合ニーズ指数 · EPAとACSのデータ</span></div>
+        <span class="btn"><span class="en">Open project ↗</span><span class="ja" lang="ja">プロジェクトを開く ↗</span></span>
+      </a>
+
+      <a class="card linked c-green" href="pipeline.html" target="_blank" rel="noopener" id="p-automated-surveillance-to-decision-pipel">
+        <h3><span class="num">04</span><span class="en">Automated Surveillance-to-Decision Pipeline</span><span class="ja" lang="ja">サーベイランスから意思決定までの自動化パイプライン</span></h3>
+        <p><span class="en">A modular pipeline that runs on a schedule, retrieves surveillance data, applies a tiered alert framework, writes the report, and delivers it with an automatic notification, with no manual steps. It is in daily production use for a public health surveillance program, and the same five-step structure was adapted as a prototype for Japan's national influenza surveillance data.</span><span class="ja" lang="ja">決まった時間に動き、サーベイランスデータを取得し、段階的なアラートの枠組みを当てはめ、レポートを書き、自動通知とともに届けるモジュール式のパイプラインです。手作業はありません。公衆衛生サーベイランスの業務で毎日使われており、同じ5段階の構成を、日本の全国インフルエンザ・サーベイランスデータ向けの試作版にも応用しました。</span></p>
+        <div class="meta"><span class="en">R · API data retrieval · Alert rules engine · Automated reporting</span><span class="ja" lang="ja">R · APIによるデータ取得 · アラートのルールエンジン · 自動レポート</span></div>
+        <span class="btn"><span class="en">Open project ↗</span><span class="ja" lang="ja">プロジェクトを開く ↗</span></span>
+      </a>
+
+      <div class="card linked c-pink" id="p-influenza-surveillance-research-in-japan">
+        <h3><span class="num">05</span><span class="en">Influenza Surveillance Research in Japan</span><span class="ja" lang="ja">日本のインフルエンザ・サーベイランス研究</span></h3>
+        <p><span class="en">Two conference abstracts with clinicians in Japan. One compares near real-time electronic health record data on pediatric influenza with national sentinel surveillance. The other evaluates an automated decision support framework for Japan's weekly influenza data: across seven seasons, its first EARS C2 alert came before the epidemic threshold every time, by a median of two weeks.</span><span class="ja" lang="ja">日本の臨床医との2つの学会抄録です。1つは、小児インフルエンザのほぼリアルタイムの電子カルテデータを、全国の定点サーベイランスと比べたものです。もう1つは、日本の週ごとのインフルエンザデータに対する自動意思決定支援の枠組みを評価したものです。7シーズンを通じて、最初のEARS C2アラートは毎回流行開始の基準より先に出ており、その差の中央値は2週間でした。</span></p>
+        <div class="meta"><span class="en">Electronic health records · EARS C2 detection · Decision support</span><span class="ja" lang="ja">電子カルテ · EARS C2による検知 · 意思決定支援</span></div>
+        <a class="btn" href="influenza-research.html" target="_blank" rel="noopener"><span class="en">Open project ↗</span><span class="ja" lang="ja">プロジェクトを開く ↗</span></a>
+      </div>
+
+      <a class="card linked c-lav subcard" href="https://japan-idwr-explorer.streamlit.app" target="_blank" rel="noopener" id="p-japan-idwr-explorer">
+        <h3><span class="num">05a</span><span class="en">Japan IDWR Surveillance Explorer (all 19 diseases)</span><span class="ja" lang="ja">日本IDWRサーベイランス・エクスプローラー（全19疾患）</span></h3>
+        <p><span class="en">The same weekly view for all 19 IDWR sentinel diseases, by prefecture, with maps of the Kanto and Kansai areas and all of Japan, and spatial clustering. Public IDWR data only. Updates automatically every week.</span><span class="ja" lang="ja">同じ週ごとの表示を、IDWRの定点把握19疾患すべてについて都道府県別に見られます。関東・関西と日本全体の地図、空間クラスタリングもあります。公開されているIDWRデータのみを使用しています。毎週自動的に更新されます。</span></p>
+        <div class="meta"><span class="en">Python · Streamlit · Plotly · PySAL · EARS C2</span><span class="ja" lang="ja">Python · Streamlit · Plotly · PySAL · EARS C2</span></div>
+        <span class="btn"><span class="en">Open the explorer ↗</span><span class="ja" lang="ja">エクスプローラーを開く ↗</span></span>
+      </a>
+
+      <a class="card linked c-lav subcard" href="https://japan-influenza-explorer.streamlit.app" target="_blank" rel="noopener" id="p-japan-influenza-explorer">
+        <h3><span class="num">05b</span><span class="en">Japan Influenza Surveillance Explorer (influenza only)</span><span class="ja" lang="ja">日本インフルエンザ・サーベイランス・エクスプローラー（インフルエンザのみ）</span></h3>
+        <p><span class="en">Weekly influenza reports per sentinel site for all 47 prefectures, with EARS C2 alerts, lead times and false alarms, maps of the Kanto and Kansai areas and all of Japan, and spatial clustering. Public IDWR data only. Updates automatically every week.</span><span class="ja" lang="ja">全47都道府県の定点あたりインフルエンザ報告数を週ごとに表示します。EARS C2アラート、先行期間と誤警報、関東・関西と日本全体の地図、空間クラスタリングもあります。公開されているIDWRデータのみを使用しています。毎週自動的に更新されます。</span></p>
+        <div class="meta"><span class="en">Python · Streamlit · Plotly · PySAL · EARS C2</span><span class="ja" lang="ja">Python · Streamlit · Plotly · PySAL · EARS C2</span></div>
+        <span class="btn"><span class="en">Open the explorer ↗</span><span class="ja" lang="ja">エクスプローラーを開く ↗</span></span>
+      </a>
+
+      <div class="card linked c-blue" id="p-interactive-story-map">
+        <h3><span class="num">06</span><span class="en">Interactive Story Map</span><span class="ja" lang="ja">インタラクティブ・ストーリーマップ</span></h3>
+        <p><span class="en">An ArcGIS story map that combines maps and narrative to present public health data in a form people can explore.</span><span class="ja" lang="ja">地図とナラティブを組み合わせ、公衆衛生データを自分で探れる形で伝えるArcGISストーリーマップです。</span></p>
+        <div class="meta"><span class="en">ArcGIS StoryMaps · Spatial data · Public health communication</span><span class="ja" lang="ja">ArcGIS StoryMaps · 空間データ · 公衆衛生のコミュニケーション</span></div>
+        <a class="btn" href="https://arcg.is/0OGaHm1" target="_blank" rel="noopener"><span class="en">Open story map ↗</span><span class="ja" lang="ja">ストーリーマップを開く ↗</span></a>
+      </div>
+
+      <div class="card linked c-purple" id="p-public-health-dashboard">
+        <h3><span class="num">07</span><span class="en">Public Health Dashboard</span><span class="ja" lang="ja">公衆衛生ダッシュボード</span></h3>
+        <p><span class="en">An ArcGIS dashboard that brings public health indicators together in interactive maps and charts for monitoring and decision support.</span><span class="ja" lang="ja">公衆衛生の指標をインタラクティブな地図とグラフにまとめ、モニタリングと意思決定支援に使うArcGISダッシュボードです。</span></p>
+        <div class="note"><span class="en">Access is restricted. Please contact me for access.</span><span class="ja" lang="ja">アクセスは制限されています。利用をご希望の方はご連絡ください。</span></div>
+        <div class="meta"><span class="en">ArcGIS Dashboards · Decision support</span><span class="ja" lang="ja">ArcGIS Dashboards · 意思決定支援</span></div>
+        <a class="btn" href="https://gisanddata.maps.arcgis.com/apps/dashboards/a3d9717aa57c45a6a5284f3268d61554" target="_blank" rel="noopener"><span class="en">Open dashboard ↗</span><span class="ja" lang="ja">ダッシュボードを開く ↗</span></a>
+      </div>
+
+      <a class="card linked c-teal" href="disability-inclusion-access.html" target="_blank" rel="noopener" id="p-disability-inclusion-recommendation-prog">
+        <h3><span class="num">08</span><span class="en">Disability Inclusion Recommendation Progress Report</span><span class="ja" lang="ja">障害者インクルージョン提言の進捗報告</span></h3>
+        <p><span class="en">A prototype quarterly report that turns an advisory committee's recommendation tracker into a visual, accessible format, with status summaries, timelines, and accessibility maps of two university campuses locating services, parking, transit, and sites tied to the recommendations.</span><span class="ja" lang="ja">諮問委員会の提言の進捗管理表を、見やすくアクセシブルな形にした四半期報告の試作版です。状況のまとめ、スケジュール、2つの大学キャンパスのアクセシビリティ地図があり、サービス、駐車場、公共交通、提言に関係する場所を示しています。</span></p>
+        <div class="meta"><span class="en">Accessible reporting · Campus accessibility maps · Decision support</span><span class="ja" lang="ja">アクセシブルな報告 · キャンパスのアクセシビリティ地図 · 意思決定支援</span></div>
+        <p style="margin-top:14px; color:#B3261E; font-weight:bold; font-size:1.02rem"><span class="en">Restricted: members only.</span><span class="ja" lang="ja">制限あり：メンバー限定です。</span></p>
+        <span class="btn"><span class="en">Request access ↗</span><span class="ja" lang="ja">アクセスを申請 ↗</span></span>
+      </a>
+
+      <a class="card linked c-yellow" href="singapore-exposure-appendix.html" target="_blank" rel="noopener" id="p-exposure-lens-singapore">
+        <h3><span class="num">09</span><span class="en">Exposure Lens Singapore</span><span class="ja" lang="ja">Exposure Lens シンガポール</span></h3>
+        <p><span class="en">A reproducible spatial analysis of air temperature and PM2.5 readings from Singapore's open government data, testing spatial autocorrelation and local indicators of spatial association, with a clear statement of which methods are valid at this scale.</span><span class="ja" lang="ja">シンガポール政府のオープンデータにある気温とPM2.5の測定値を使った、再現可能な空間分析です。空間的自己相関と局所的空間関連指標（LISA）を検定し、このスケールでどの手法が有効かを示しています。</span></p>
+        <div class="meta"><span class="en">Global Moran's I · LISA · Open data (data.gov.sg)</span><span class="ja" lang="ja">全体のモランI · LISA · オープンデータ（data.gov.sg）</span></div>
+        <span class="btn"><span class="en">Open project ↗</span><span class="ja" lang="ja">プロジェクトを開く ↗</span></span>
+      </a>
+
+      <a class="card linked c-green" href="brain-volume-sankey/" target="_blank" rel="noopener" id="p-brain-volume-composition">
+        <h3><span class="num">10</span><span class="en">Brain Volume Composition</span><span class="ja" lang="ja">脳容積の構成</span></h3>
+        <p><span class="en">An interactive Sankey diagram showing how intracranial volume divides across five levels of brain regions, built from MRICloud volumetric data. It demonstrates turning hierarchical data into an explorable web graphic.</span><span class="ja" lang="ja">MRICloudの容積データから作った、頭蓋内容積が5段階の脳領域にどう分かれるかを示すインタラクティブなサンキー図です。階層データを、自分で探れるウェブグラフィックにする例です。</span></p>
+        <div class="meta"><span class="en">Python · Plotly · Hierarchical data</span><span class="ja" lang="ja">Python · Plotly · 階層データ</span></div>
+        <span class="btn"><span class="en">Open project ↗</span><span class="ja" lang="ja">プロジェクトを開く ↗</span></span>
+      </a>
+
+      <div class="card" id="p-housing-environment-and-health-across-th">
+        <h3><span class="num">11</span><span class="en">Housing, Environment, and Health Across Three Cities </span><span class="ja" lang="ja">3都市における住宅、環境、健康 </span><span class="status"><span class="en">In development</span><span class="ja" lang="ja">開発中</span></span></h3>
+        <p><span class="en">A comparison of Richmond, California; Cambridge, United Kingdom; and Singapore using open housing, environmental, and health data, applying the same spatial and interactive methods across very different urban settings. The Richmond module is live in the explorer above; the Cambridge and Singapore modules follow.</span><span class="ja" lang="ja">カリフォルニア州リッチモンド、イギリスのケンブリッジ、シンガポールを、住宅、環境、健康のオープンデータで比べます。大きく異なる都市環境に、同じ空間的・インタラクティブな手法を当てはめます。リッチモンドのモジュールは上のエクスプローラーで公開中で、ケンブリッジとシンガポールのモジュールがこれに続きます。</span></p>
+        <div class="meta"><span class="en">Spatial statistics · Housing indicators · Comparative urban health</span><span class="ja" lang="ja">空間統計 · 住宅指標 · 都市の健康の比較</span></div>
+      </div>
+
+      <div class="card" id="p-informatics-for-health-equity">
+        <h3><span class="num">12</span><span class="en">Informatics for Health Equity: Summary and Schematics</span><span class="ja" lang="ja">健康の公平性のためのインフォマティクス：概要と模式図</span></h3>
+        <p><span class="en">Please contact me for details about this project.</span><span class="ja" lang="ja">このプロジェクトの詳細については、ご連絡ください。</span></p>
+      </div>
+    </section>
+
+    <footer><span class="en">Genie Tang · Contact: noriko [at] berkeley [dot] edu</span><span class="ja" lang="ja">Genie Tang · 連絡先：noriko [at] berkeley [dot] edu</span> · <span class="en">Site</span><span class="ja" lang="ja">サイト</span> v5</footer>
+  </main>
+  </div>
+</div>
+<script>
+  // highlight the sidebar link for the section in view
+  (function(){
+    var links=[].slice.call(document.querySelectorAll('.side nav a'));
+    var targets=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+    function update(){
+      ['.topnav a','.side nav a'].forEach(function(sel){
+        var ls=[].slice.call(document.querySelectorAll(sel)), cur=-1;
+        ls.forEach(function(a,i){ var t=document.querySelector(a.getAttribute('href')); if(t && t.getBoundingClientRect().top < 140) cur=i; });
+        ls.forEach(function(a,i){ a.classList.toggle('active', i===cur); });
+      });
+    }
+    window.addEventListener('scroll',update,{passive:true}); update();
+  })();
+</script>
+<script>
+  // English / 日本語 switch. Links to the Streamlit apps open in the same language.
+  (function () {
+    var TITLE = { en: "Spatial Health Informatics", ja: "Spatial Health Informatics（空間ヘルスインフォマティクス）" };
+    var img = document.querySelector(".framework img");
+    var ALT = { en: img ? img.getAttribute("alt") : "",
+                ja: "健康の公平性のための空間的意思決定インテリジェンスのフレームワーク：ストーリーマップ、ダッシュボード、設計に役立つ予測モデル、建築設計シミュレーター。建物、道路と移動、土地利用とゾーニング、住宅と換気、グリーン・ブルーインフラに活かします。" };
+    // Only the apps that have a Japanese version (the Richmond explorer is English only).
+    var apps = [].slice.call(document.querySelectorAll('a[href*=".streamlit.app"]')).filter(function (a) {
+      return !/richmond-explorer/.test(a.getAttribute("href"));
+    });
+    apps.forEach(function (a) { a.setAttribute("data-base", a.getAttribute("href").split("?")[0]); });
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.title = TITLE[lang];
+      if (img) img.setAttribute("alt", ALT[lang]);
+      apps.forEach(function (a) {
+        var base = a.getAttribute("data-base");
+        a.setAttribute("href", lang === "ja" ? base.replace(/\/?$/, "/") + "?lang=ja" : base);
+      });
+      [].slice.call(document.querySelectorAll(".langswitch button")).forEach(function (b) {
+        b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+      });
+    }
+    [].slice.call(document.querySelectorAll(".langswitch button")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var lang = b.getAttribute("data-lang");
+        try { sessionStorage.setItem("shi-lang", lang); } catch (e) {}
+        setLang(lang);
+      });
+    });
+    setLang(document.documentElement.lang === "ja" ? "ja" : "en");
+  })();
+</script>
+</body>
+</html>
