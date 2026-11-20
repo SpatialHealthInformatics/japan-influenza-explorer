@@ -2,9 +2,13 @@
 # Japan Influenza Surveillance Explorer (Streamlit web app)
 # Author:   Genie Tang (gtang10@jh.edu)
 # Script:   app.py
-# Version:  v30
+# Version:  v31
 #
 # Version log
+#   v31 (2026-11-20): The data refresh automatically. tools/update_idwr_data.py reads the newest JIHS yearly
+#       prefecture file, checks it, keeps influenza only, and rewrites data/idwr_weekly.csv; a GitHub Actions
+#       job runs it daily. The app reloads the data table when that file changes, so a cached copy no longer
+#       keeps showing the old last week.
 #   v30 (2026-11-01): The sidebar opener uses st.iframe, which replaces st.components.v1.html
 #       (deprecated in Streamlit); the old call stays as a fallback. Nothing else changed.
 #   v29 (2026-11-01): The sidebar opens on every page load, also for a visitor whose browser remembers it closed. The open and close arrows are lime green.
@@ -300,8 +304,14 @@ def onset_and_first_alert(x: np.ndarray, alert: np.ndarray, c2: np.ndarray):
     return on, (int(cand[0]) if len(cand) else None)
 
 
+def data_stamp() -> str:
+    """Changes whenever data/idwr_weekly.csv changes, so the cached table below is reloaded."""
+    f = DATA_DIR / "idwr_weekly.csv"
+    return f"{f.stat().st_mtime_ns}-{f.stat().st_size}" if f.exists() else "none"
+
+
 @st.cache_data(show_spinner="Loading IDWR weekly reports...")
-def load_weekly(drop_holidays: bool, threshold: float, allow_sample: bool):
+def load_weekly(drop_holidays: bool, threshold: float, allow_sample: bool, stamp: str = ""):
     """Return (weekly frame, is_sample, c2 taken from the R output, geography notes).
 
     1. Read the weekly table (one row per prefecture, week and disease).
@@ -802,7 +812,7 @@ st.session_state.setdefault("drop_holidays", True)
 drop_holidays = st.session_state["drop_holidays"]
 threshold = st.session_state.get("ears_thr", 3.0)
 try:
-    weekly, is_sample, use_r_c2, geo_notes = load_weekly(drop_holidays, threshold, ALLOW_SAMPLE)
+    weekly, is_sample, use_r_c2, geo_notes = load_weekly(drop_holidays, threshold, ALLOW_SAMPLE, data_stamp())
 except FileNotFoundError:
     st.title("Weekly Influenza Reports by Prefecture in Japan")
     st.error("The weekly IDWR table is not loaded yet. Add data/idwr_weekly.csv, written by the IDWR "
@@ -1247,7 +1257,7 @@ with tab_alerts:
         st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
 
         # New Year check: alerts in weeks 2 to 8 with and without the holiday weeks in the baselines.
-        other = load_weekly(not drop_holidays, threshold, ALLOW_SAMPLE)[0]
+        other = load_weekly(not drop_holidays, threshold, ALLOW_SAMPLE, data_stamp())[0]
         other = other[(other["disease"] == disease) & (other["week_start"] >= start_ts) & (other["week_start"] <= end_ts)]
         post = lambda f: int((f["alert"] & f["week"].between(2, 8)).sum())
         kept, left_out = (post(other), post(d[in_window])) if drop_holidays else (post(d[in_window]), post(other))
